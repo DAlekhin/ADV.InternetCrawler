@@ -4,41 +4,67 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Хранилище InternetCrawlerModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище InternetCrawlerModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DataPoint">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" />
-          <Property Name="URI" Type="nvarchar(max)" />
-          <Property Name="PageURI" Type="nvarchar(max)" />
-          <Property Name="ItemURI" Type="nvarchar(max)" />
-          <Property Name="ItemName" Type="nvarchar(max)" />
-          <Property Name="ItemPrice" Type="nvarchar(max)" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="URI" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PageURI" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ItemURI" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ItemName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ItemPrice" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ItemDeep" Type="bit" Nullable="false" />
           <Property Name="ItemDiscountPrice" Type="nvarchar(max)" />
           <Property Name="ItemArticle" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Logger">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HeaderID" Type="int" Nullable="false" />
+          <Property Name="SubModuleName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ProccessDateTime" Type="datetime" Nullable="false" />
+          <Property Name="URI" Type="nvarchar(max)" />
+          <Property Name="Level" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Exception" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="LoggerHeader">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PointID" Type="int" />
+          <Property Name="StartSession" Type="datetime" Nullable="false" />
+          <Property Name="FinishSession" Type="datetime" />
+          <Property Name="ModuleName" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="PointContent">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PointID" Type="int" Nullable="false" />
           <Property Name="SaveDateTime" Type="datetime" Nullable="false" />
-          <Property Name="ItemName" Type="varchar" MaxLength="250" Nullable="false" />
-          <Property Name="ItemArticle" Type="varchar" MaxLength="250" Nullable="false" />
-          <Property Name="ItemUri" Type="varchar" MaxLength="1024" Nullable="false" />
+          <Property Name="ItemName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ItemArticle" Type="nvarchar(max)" />
+          <Property Name="ItemUri" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ItemPrice" Type="decimal" Precision="18" Scale="10" Nullable="false" />
           <Property Name="ItemDiscountPrice" Type="decimal" Precision="18" Scale="10" Nullable="false" />
-          <Property Name="ItemPictureUri" Type="varchar" MaxLength="1024" Nullable="false" />
+          <Property Name="ItemPictureUri" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="Хранилище InternetCrawlerModelContainer">
           <EntitySet Name="DataPoint" EntityType="Self.DataPoint" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logger" EntityType="Self.Logger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoggerHeader" EntityType="Self.LoggerHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PointContent" EntityType="Self.PointContent" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InternetCrawlerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -47,20 +73,38 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="URI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PageURI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ItemURI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ItemName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ItemPrice" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="URI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PageURI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ItemURI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ItemName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ItemPrice" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ItemDeep" Type="Boolean" Nullable="false" />
           <Property Name="ItemDiscountPrice" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ItemArticle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityContainer Name="InternetCrawlerEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="DataPoint" EntityType="Self.DataPoint" />
-          <EntitySet Name="PointContent" EntityType="InternetCrawlerModel.PointContent" />
-        </EntityContainer>
+        <EntityType Name="Logger">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HeaderID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProccessDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="URI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Exception" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LoggerHeader">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PointID" Type="Int32" />
+          <Property Name="StartSession" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FinishSession" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="PointContent">
           <Key>
             <PropertyRef Name="ID" />
@@ -68,13 +112,19 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PointID" Type="Int32" Nullable="false" />
           <Property Name="SaveDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ItemName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ItemArticle" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ItemUri" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
-          <Property Name="ItemPrice" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
-          <Property Name="ItemDiscountPrice" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
-          <Property Name="ItemPictureUri" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="ItemName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ItemArticle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ItemUri" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ItemPrice" Type="Decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="ItemDiscountPrice" Type="Decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="ItemPictureUri" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityContainer Name="InternetCrawlerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DataPoint" EntityType="Self.DataPoint" />
+          <EntitySet Name="Logger" EntityType="Self.Logger" />
+          <EntitySet Name="LoggerHeader" EntityType="Self.LoggerHeader" />
+          <EntitySet Name="PointContent" EntityType="Self.PointContent" />
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -84,8 +134,6 @@
           <EntitySetMapping Name="DataPoint">
             <EntityTypeMapping TypeName="InternetCrawlerModel.DataPoint">
               <MappingFragment StoreEntitySet="DataPoint">
-                <ScalarProperty Name="ItemArticle" ColumnName="ItemArticle" />
-                <ScalarProperty Name="ItemDiscountPrice" ColumnName="ItemDiscountPrice" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="URI" ColumnName="URI" />
@@ -94,21 +142,47 @@
                 <ScalarProperty Name="ItemName" ColumnName="ItemName" />
                 <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
                 <ScalarProperty Name="ItemDeep" ColumnName="ItemDeep" />
+                <ScalarProperty Name="ItemDiscountPrice" ColumnName="ItemDiscountPrice" />
+                <ScalarProperty Name="ItemArticle" ColumnName="ItemArticle" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logger">
+            <EntityTypeMapping TypeName="InternetCrawlerModel.Logger">
+              <MappingFragment StoreEntitySet="Logger">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="HeaderID" ColumnName="HeaderID" />
+                <ScalarProperty Name="ModuleName" ColumnName="SubModuleName" />
+                <ScalarProperty Name="ProccessDateTime" ColumnName="ProccessDateTime" />
+                <ScalarProperty Name="URI" ColumnName="URI" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Exception" ColumnName="Exception" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoggerHeader">
+            <EntityTypeMapping TypeName="InternetCrawlerModel.LoggerHeader">
+              <MappingFragment StoreEntitySet="LoggerHeader">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PointID" ColumnName="PointID" />
+                <ScalarProperty Name="StartSession" ColumnName="StartSession" />
+                <ScalarProperty Name="FinishSession" ColumnName="FinishSession" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PointContent">
             <EntityTypeMapping TypeName="InternetCrawlerModel.PointContent">
               <MappingFragment StoreEntitySet="PointContent">
-                <ScalarProperty Name="ItemPictureUri" ColumnName="ItemPictureUri" />
-                <ScalarProperty Name="ItemDiscountPrice" ColumnName="ItemDiscountPrice" />
-                <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
-                <ScalarProperty Name="ItemUri" ColumnName="ItemUri" />
-                <ScalarProperty Name="ItemArticle" ColumnName="ItemArticle" />
-                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
-                <ScalarProperty Name="SaveDateTime" ColumnName="SaveDateTime" />
-                <ScalarProperty Name="PointID" ColumnName="PointID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PointID" ColumnName="PointID" />
+                <ScalarProperty Name="SaveDateTime" ColumnName="SaveDateTime" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemArticle" ColumnName="ItemArticle" />
+                <ScalarProperty Name="ItemUri" ColumnName="ItemUri" />
+                <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
+                <ScalarProperty Name="ItemDiscountPrice" ColumnName="ItemDiscountPrice" />
+                <ScalarProperty Name="ItemPictureUri" ColumnName="ItemPictureUri" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

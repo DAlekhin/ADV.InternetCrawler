@@ -1,12 +1,14 @@
 ﻿using System;
 using ADV.InternetCrawler.Interface;
+using ADV.InternetCrawler.Utility.Logger.Interface;
+using ADV.InternetCrawler.Utility.Logger;
 using ADV.InternetCrawler.DataBase.EF;
 using System.Linq;
 using System.Collections.Generic;
 
 namespace ADV.InternetCrawler.DataBase
 {
-    public class DAL : IDataBase
+    public class DAL : IDataBase, ILogger
     {
         private String connectionString;
 
@@ -167,6 +169,72 @@ namespace ADV.InternetCrawler.DataBase
 
                         l_icEntity.PointContent.Add(l_efPointContent);
                     }
+
+                    l_icEntity.SaveChanges();
+                }
+            }
+            catch (Exception l_exc)
+            {
+                throw new Exception(l_exc.Message, l_exc);
+            }
+        }
+
+        public void GetNewHeaderID(Header _loggerHeader)
+        {
+            try
+            {
+                using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
+                {
+                    EF.LoggerHeader l_loggerHeader = new EF.LoggerHeader()
+                    {
+                        PointID = _loggerHeader.pointID,
+                        StartSession = _loggerHeader.startSession
+                    };
+
+                    l_icEntity.LoggerHeader.Add(l_loggerHeader);
+                    l_icEntity.SaveChanges();
+
+                    _loggerHeader.id = l_loggerHeader.ID;
+                }
+            }
+            catch (Exception l_exc)
+            {
+                throw new Exception(l_exc.Message, l_exc);
+            }
+        }
+
+        public void PutLogMessages(Header _loggerHeader)
+        {
+            try
+            {
+                using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
+                {
+                    EF.LoggerHeader l_loggerHeader = new EF.LoggerHeader()
+                    {
+                        PointID = _loggerHeader.pointID,
+                        StartSession = _loggerHeader.startSession,
+                        FinishSession = _loggerHeader.finishSession
+                    };
+
+                    l_icEntity.LoggerHeader.Add(l_loggerHeader);
+                    l_icEntity.SaveChanges();
+
+                    if (_loggerHeader.messages.Count > 0)
+                        foreach(Message l_message in _loggerHeader.messages)
+                        {
+                            Logger l_logger = new Logger()
+                            {
+                                HeaderID = l_loggerHeader.ID,
+                                ModuleName = l_message.moduleName,
+                                ProccessDateTime = l_message.proccessDateTime,
+                                URI = l_message.uri,
+                                Level = (int)l_message.messageType,
+                                Message = l_message.message,
+                                Exception = l_message.exception == null ? null : l_message.exception.ToString()
+                            };
+
+                            l_icEntity.Logger.Add(l_logger);
+                        }
 
                     l_icEntity.SaveChanges();
                 }

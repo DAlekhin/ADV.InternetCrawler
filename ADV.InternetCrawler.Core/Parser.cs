@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using ADV.InternetCrawler.Interface;
 using System.Text.RegularExpressions;
+using ADV.InternetCrawler.Utility.Logger;
+using System.Reflection;
 
 namespace ADV.InternetCrawler.Core
 {
-    public class Parser : IParser
+    public class Parser : LogMessages, IParser
     {
         private DataPoint dataPoint;
         private String userAgent;
@@ -41,35 +43,55 @@ namespace ADV.InternetCrawler.Core
             }
         }
 
+        public Parser()
+        { 
+        }
+
         public void PullRequest(DataPoint _dataPoint)
         {
             dataPoint = _dataPoint;
 
             try
             {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Инициализация парсера веб-ресурса.");
+
                 String l_startBody = PageBody.GetPageBody(dataPoint.Uri);
 
                 GetPageUriList(l_startBody);
 
                 for(Int32 l_page = pageNumbers.Min(); l_page < pageNumbers.Max(); l_page++)
                 {
-                    String l_pageUri = GetPageUri(l_page, dataPoint.PageUri);
-                    String l_fullUri = GetFullUri(l_pageUri, dataPoint.Uri);
+                    String l_pageUri = null;
+                    String l_fullUri = null;
 
-                    System.Threading.Thread.Sleep((int)TimeSpan.FromSeconds(timePause).TotalMilliseconds);
+                    try
+                    {
+                        l_pageUri = GetPageUri(l_page, dataPoint.PageUri);
+                        l_fullUri = GetFullUri(l_pageUri, dataPoint.Uri);
+                    }
+                    catch (Exception l_exc)
+                    {
+                        AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при построении ссылок: {l_exc.Message}", l_exc);
+                    }
 
-                    String l_contentBody = PageBody.GetPageBody(l_fullUri);
+                    if (CheckError())
+                    {
+                        System.Threading.Thread.Sleep((int)TimeSpan.FromSeconds(timePause).TotalMilliseconds);
 
-                    GetItemUriList(l_contentBody);
+                        String l_contentBody = PageBody.GetPageBody(l_fullUri);
 
-                    break;
+                        GetItemUriList(l_contentBody);
+                    }
                 }
 
-                SaveItemContent();
+                if (CheckError())
+                {
+                    SaveItemContent();
+                }
             }
             catch(Exception l_exc)
             {
-                throw new Exception(l_exc.Message, l_exc);
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка инициализации парсера: {l_exc.Message}", l_exc);
             }
         }
 
@@ -79,6 +101,8 @@ namespace ADV.InternetCrawler.Core
 
             try
             {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Debug, $"Инициализация загрузки списка ссылок на товары со страниц.");
+
                 Regex l_regexPages = new Regex(dataPoint.PageUri);
                 MatchCollection l_matchPages = l_regexPages.Matches(_contentBody);
 
@@ -95,6 +119,8 @@ namespace ADV.InternetCrawler.Core
                     GetPageUriList(PageBody.GetPageBody(l_maxPageUri), false);
                 }
 
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Debug, $"Получены индекс максимальный страницы - {l_numPages.Max()}");
+
                 if (l_numPages.Max() != pageNumbers.Max())
                 {
                     String l_maxPageUri = GetFullUri(dataPoint.PageUri, dataPoint.Uri);
@@ -105,7 +131,7 @@ namespace ADV.InternetCrawler.Core
             }
             catch (Exception l_exc)
             {
-                throw new Exception(l_exc.Message, l_exc);
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка получения страниц: {l_exc.Message}", l_exc);
             }
         }
 
@@ -135,6 +161,8 @@ namespace ADV.InternetCrawler.Core
             {
                 Regex l_uriPattern = new Regex(@"http(s)?://[^/]+(?=/)");
                 l_fullUri = l_uriPattern.Match(_pattern).Value + _uri;
+
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, l_fullUri, MessageType.Trace, $"Получена ссылка.");
             }
             catch (Exception l_exc)
             {
@@ -168,6 +196,8 @@ namespace ADV.InternetCrawler.Core
                 {
                     try
                     {
+                        AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, l_uri, MessageType.Trace, $"Инициализация парсинга товара {l_uri}");
+
                         System.Threading.Thread.Sleep((int)TimeSpan.FromSeconds(timePause).TotalMilliseconds);
 
                         String l_contentBody = PageBody.GetPageBody(l_uri);
@@ -196,13 +226,13 @@ namespace ADV.InternetCrawler.Core
                     }
                     catch (Exception l_exc)
                     {
-                        throw new Exception($"Возникла ошибка при парсинге товара: {l_uri}", l_exc);
+                        AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, l_uri, MessageType.Fatal, $"Ошибка при парсинге товара: {l_exc.Message}", l_exc);
                     }
                 }
             }
             catch (Exception l_exc)
             {
-                throw new Exception(l_exc.Message, l_exc);
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при парсинге товаров: {l_exc.Message}", l_exc);
             }
         }
 

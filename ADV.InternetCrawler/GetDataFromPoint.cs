@@ -4,12 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ADV.InternetCrawler.Interface;
+using ADV.InternetCrawler.Utility.Logger;
+using System.Reflection;
 
 namespace ADV.InternetCrawler
 {
-    public class GetDataFromPoint
+    public class GetDataFromPoint : LogMessages
     {
-        public DataPoint dataPoint;
+        private DataPoint dataPoint;
+
+        //public GetDataFromPoint()
+        //{
+        //}
 
         public DataPoint GetDataPoint(Int32 _id)
         {
@@ -19,10 +25,17 @@ namespace ADV.InternetCrawler
             {
                 var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
                 l_dataPoint = l_containerObject.GetDataPoint(_id);
+
+                this.PointID = _id;
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Получена точка данных {_id}");
             }
             catch (Exception l_exc)
             {
-                throw new Exception(l_exc.Message, l_exc);
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при получении точки данных {_id}: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
             }
 
             return l_dataPoint;
@@ -36,10 +49,16 @@ namespace ADV.InternetCrawler
             {
                 var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
                 l_dataPoints = l_containerObject.GetDataPoints();
+
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Получено {l_dataPoints.Count} точек данных");
             }
             catch (Exception l_exc)
             {
-                throw new Exception(l_exc.Message, l_exc);
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при получении списка всех точек данных: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
             }
 
             return l_dataPoints;
@@ -54,15 +73,23 @@ namespace ADV.InternetCrawler
             {
                 l_dataPoint = GetDataPoint(_id);
 
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Trace, $"Инициализация получения контента из точки {_id}");
+
                 var l_containerObject = (IParser)Utility.Container.GetObject("Parser");
                 l_containerObject.PullRequest(l_dataPoint);
+
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Trace, $"Инициализация сохранения контента из точки {_id}");
                 l_pointContents = l_containerObject.PutPointContent();
 
                 SaveDataPointContent(l_pointContents);
             }
             catch (Exception l_exc)
             {
-                throw new Exception(l_exc.Message, l_exc);
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при получении контента из точки {_id}: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
             }
         }
 
@@ -77,13 +104,20 @@ namespace ADV.InternetCrawler
                 //Переделать на параллелизм
                 foreach(DataPoint l_dataPoint in l_dataPoints)
                 {
+                    this.PointID = l_dataPoint.PointID;
+                    AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Trace, $"Инициализация сохранения контента из точки {l_dataPoint.PointID}");
+
                     var l_containerObject = (IParser)Utility.Container.GetObject("Parser");
                     l_containerObject.PullRequest(l_dataPoint);
                 }
             }
             catch (Exception l_exc)
             {
-                throw new Exception(l_exc.Message, l_exc);
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при получении контента из всех точек: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
             }
         }
 
@@ -93,6 +127,8 @@ namespace ADV.InternetCrawler
             {
                 var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
                 l_containerObject.SavePointContent(_pointContents);
+
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Контент успешно сохранен.");
             }
             catch (Exception l_exc)
             {

@@ -68,6 +68,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InternetCrawler.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EF\Logger.cs">
+      <DependentUpon>InternetCrawler.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\LoggerHeader.cs">
+      <DependentUpon>InternetCrawler.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\PointContent.cs">
       <DependentUpon>InternetCrawler.tt</DependentUpon>
     </Compile>
@@ -85,6 +91,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ADV.InternetCrawler.Utility\ADV.InternetCrawler.Utility.csproj">
+      <Project>{0d17a93c-2f3d-4b86-9ac6-db1d3b4155e0}</Project>
+      <Name>ADV.InternetCrawler.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ADV.InternetCrawler\ADV.InternetCrawler.csproj">
       <Project>{0cb17b4d-9803-4ca0-8d56-91bc94d2451f}</Project>
       <Name>ADV.InternetCrawler</Name>
@@ -93,7 +103,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="EF\InternetCrawler.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

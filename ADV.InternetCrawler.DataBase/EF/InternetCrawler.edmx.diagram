@@ -4,9 +4,11 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="70ca4064a282431d866a6ac13a2f80ba" Name="Diagram1">
+      <Diagram DiagramId="c4838d9588754af68ef8b970dde06187" Name="Diagram1">
         <EntityTypeShape EntityType="InternetCrawlerModel.DataPoint" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InternetCrawlerModel.PointContent" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="InternetCrawlerModel.Logger" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InternetCrawlerModel.LoggerHeader" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InternetCrawlerModel.PointContent" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

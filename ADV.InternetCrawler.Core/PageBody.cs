@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.Reflection;
 
 namespace ADV.InternetCrawler.Core
 {

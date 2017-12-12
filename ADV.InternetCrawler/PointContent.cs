@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ADV.InternetCrawler.Interface;
+using ADV.InternetCrawler.Utility.Logger;
+using System.Reflection;
 
 namespace ADV.InternetCrawler
 {
-    public class PointContent
+    public class PointContent : LogMessages
     {
         private Int32 pointID;
         private String itemName;
@@ -103,6 +105,10 @@ namespace ADV.InternetCrawler
 
         public List<PointContent> pointContents;
 
+        public PointContent()
+        {
+        }
+
         public void SavePointContent()
         {
             try
@@ -119,7 +125,11 @@ namespace ADV.InternetCrawler
             }
             catch (Exception l_exc)
             {
-                throw new Exception(l_exc.Message, l_exc);
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при сохранении контента: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
             }
         }
     }

@@ -50,6 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Container.cs" />
+    <Compile Include="Logger\Interface\ILogger.cs" />
+    <Compile Include="Logger\Logger.cs" />
+    <Compile Include="Logger\Message.cs" />
+    <Compile Include="Logger\MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

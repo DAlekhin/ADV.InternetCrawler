@@ -2,11 +2,13 @@
 using System.Net;
 using System.IO;
 using ADV.InternetCrawler.Utility;
+using ADV.InternetCrawler.Utility.Logger;
 using ADV.InternetCrawler.Interface;
+using System.Reflection;
 
 namespace ADV.InternetCrawler
 {
-    public class DataPoint
+    public class DataPoint : LogMessages
     {
         private Int32 id;
         private String name;
@@ -28,6 +30,7 @@ namespace ADV.InternetCrawler
             set
             {
                 id = value;
+                this.PointID = value;
             }
         }
 
@@ -139,20 +142,36 @@ namespace ADV.InternetCrawler
             }
         }
 
+        public DataPoint()
+        {
+        }
+
         public void Save()
         {
             try
             {
-                var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
-                l_containerObject.SaveDataPoint(this);
+                CheckConnect();
+
+                if (CheckError())
+                {
+                    var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
+                    l_containerObject.SaveDataPoint(this);
+
+                    this.PointID = this.id;
+                    AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Сохранена точка данных {id}");
+                }
             }
             catch (Exception l_exc)
             {
-                throw new Exception(l_exc.Message, l_exc);
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при сохранении точки данных: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
             }
         }
 
-        public void CheckConnect()
+        private void CheckConnect()
         {
             HttpStatusCode l_statusCode;
 
@@ -166,7 +185,6 @@ namespace ADV.InternetCrawler
                 using (StreamReader l_reader = new StreamReader(l_stream))
                 {
                     l_statusCode = ((HttpWebResponse)l_response).StatusCode;
-                    //string l_contents = l_reader.ReadToEnd();
                 }
 
                 if (l_statusCode != HttpStatusCode.OK)
@@ -176,7 +194,7 @@ namespace ADV.InternetCrawler
             }
             catch (Exception l_exc)
             {
-                throw new Exception(l_exc.Message, l_exc);
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Error, $"Ошибка при сохранении точки данных: {l_exc.Message}", l_exc);
             }
         }
     }

@@ -72,6 +72,10 @@
       <Project>{891963de-cd2e-4af7-b3f0-f5f7e8d3be87}</Project>
       <Name>ADV.InternetCrawler.DataBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ADV.InternetCrawler.Utility\ADV.InternetCrawler.Utility.csproj">
+      <Project>{0d17a93c-2f3d-4b86-9ac6-db1d3b4155e0}</Project>
+      <Name>ADV.InternetCrawler.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ADV.InternetCrawler\ADV.InternetCrawler.csproj">
       <Project>{0cb17b4d-9803-4ca0-8d56-91bc94d2451f}</Project>
       <Name>ADV.InternetCrawler</Name>

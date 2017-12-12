@@ -28,6 +28,8 @@ namespace ADV.InternetCrawler.DataBase.EF
         }
     
         public virtual DbSet<DataPoint> DataPoint { get; set; }
+        public virtual DbSet<Logger> Logger { get; set; }
+        public virtual DbSet<LoggerHeader> LoggerHeader { get; set; }
         public virtual DbSet<PointContent> PointContent { get; set; }
     }
 }

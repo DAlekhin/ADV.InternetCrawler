@@ -24,7 +24,6 @@ namespace ADV.InternetCrawler.UnitTest
                     ItemDiscountPrice = "<span class=\"skidkapokarte\"[^>]+>(?<Data>[^<]+)<|<span class=\"price\\s*-\\s*standard product\\s*-\\s*price\">(?<Data>[^<]+)<"
                 };
 
-                l_dataPoint.CheckConnect();
                 l_dataPoint.Save();
             }
             catch (Exception l_exc)
@@ -44,7 +43,6 @@ namespace ADV.InternetCrawler.UnitTest
                     Uri = "https://www.bethowen.ru/catalogue/dogs1/"
                 };
 
-                l_dataPoint.CheckConnect();
                 l_dataPoint.Save();
 
                 Assert.Fail("Ожидалось исключение.");
