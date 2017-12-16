@@ -77,6 +77,9 @@
     <Compile Include="EF\PointContent.cs">
       <DependentUpon>InternetCrawler.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\Proc_GetDataPointStats.cs">
+      <DependentUpon>InternetCrawler.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

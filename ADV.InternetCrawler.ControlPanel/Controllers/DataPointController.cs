@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ADV.InternetCrawler.ControlPanel.Models;
+using ADV.InternetCrawler.Models;
 
 namespace ADV.InternetCrawler.ControlPanel.Controllers
 {
@@ -23,19 +24,21 @@ namespace ADV.InternetCrawler.ControlPanel.Controllers
             return View(l_dataPointStats);
         }
 
-        [HttpPost]
-        public JsonResult GetDataPointStats()
-        {
-            List<DataPointStatsModel> l_dataPointStats = new List<DataPointStatsModel>();
+        //[HttpPost]
+        //public JsonResult GetDataPointStats()
+        //{
+        //    List<DataPointStatsModel> l_dataPointStats = new List<DataPointStatsModel>();
             
-            try
-            {
+        //    try
+        //    {
 
-            }
-            catch (Exception l_exc)
-            {
+        //    }
+        //    catch (Exception l_exc)
+        //    {
 
-            }
-        }
+        //    }
+
+        //    return l_dataPointStats;
+        //}
     }
 }

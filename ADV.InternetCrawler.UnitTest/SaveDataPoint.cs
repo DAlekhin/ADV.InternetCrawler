@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ADV.InternetCrawler;
+using ADV.InternetCrawler.Models;
+using System.Collections.Generic;
 
 namespace ADV.InternetCrawler.UnitTest
 {
@@ -112,6 +114,25 @@ namespace ADV.InternetCrawler.UnitTest
                 var l_dataPoints = l_getData.GetDataPoints();
 
                 if (l_dataPoints.Count > 0)
+                    Assert.IsTrue(true);
+                else
+                    Assert.Fail("Строки не получены.");
+            }
+            catch (Exception l_exc)
+            {
+                Assert.Fail(l_exc.Message);
+            }
+        }
+
+        [TestMethod]
+        public void CheckGetDataPointStats()
+        {
+            try
+            {
+                GetDataFromPoint l_getData = new GetDataFromPoint();
+                var l_dataPointStats = l_getData.GetDataPointStats();
+
+                if (l_dataPointStats.Count > 0)
                     Assert.IsTrue(true);
                 else
                     Assert.Fail("Строки не получены.");

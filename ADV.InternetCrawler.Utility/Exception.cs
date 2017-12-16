@@ -18,7 +18,7 @@ namespace ADV.InternetCrawler.Utility
             String l_excResult = "";
             List<Exception> l_listOfException = new List<Exception>();
 
-            foreach (Message l_logMessage in _logMessages.Where(w => w.messageType == MessageType.Error))
+            foreach (Message l_logMessage in _logMessages.Where(w => w.messageType == MessageType.Error || w.messageType == MessageType.Fatal))
             {
                 l_excResult += $"{l_logMessage.message}{Environment.NewLine}";
                 l_listOfException.Add(new Exception(l_logMessage.message, l_logMessage.exception));

@@ -125,8 +125,20 @@
           <EntitySet Name="Logger" EntityType="Self.Logger" />
           <EntitySet Name="LoggerHeader" EntityType="Self.LoggerHeader" />
           <EntitySet Name="PointContent" EntityType="Self.PointContent" />
-          <FunctionImport Name="Proc_GetDataPointStats" />
+          <EntitySet Name="Proc_GetDataPointStats" EntityType="InternetCrawlerModel.Proc_GetDataPointStats" />
+          <FunctionImport Name="Get_DataPointStats" EntitySet="Proc_GetDataPointStats" ReturnType="Collection(InternetCrawlerModel.Proc_GetDataPointStats)" />
         </EntityContainer>
+        <EntityType Name="Proc_GetDataPointStats" >
+          <Key>
+            <PropertyRef Name="PointID" />
+          </Key>
+          <Property Name="PointID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Items" Type="Int32" Nullable="false" />
+          <Property Name="Rounds" Type="Int32" Nullable="false" />
+          <Property Name="LastRound" Type="DateTime" Nullable="false" />
+          <Property Name="Errors" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -188,7 +200,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="Proc_GetDataPointStats" FunctionName="Хранилище InternetCrawlerModel.Proc_GetDataPointStats" />
+          <FunctionImportMapping FunctionImportName="Get_DataPointStats" FunctionName="Хранилище InternetCrawlerModel.Proc_GetDataPointStats" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

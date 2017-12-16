@@ -1,4 +1,4 @@
-﻿@using ADV.InternetCrawler.ControlPanel.Models
+﻿@using ADV.InternetCrawler.Models
 @model DataPointStatsModel
 
 @Styles.Render("~/Content/dataTables")
@@ -20,7 +20,7 @@
         <table id="dataPoints" class="display" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th>@Html.DisplayNameFor(m => m.ID)</th>
+                    <th>@Html.DisplayNameFor(m => m.PointID)</th>
                     <th>@Html.DisplayNameFor(m => m.Name)</th>
                     <th>@Html.DisplayNameFor(m => m.Items)</th>
                     <th>@Html.DisplayNameFor(m => m.Rounds)</th>

@@ -7,6 +7,7 @@ using ADV.InternetCrawler.Interface;
 using ADV.InternetCrawler.Utility.Logger;
 using System.Reflection;
 using ADV.InternetCrawler.Utility;
+using ADV.InternetCrawler.Models;
 
 namespace ADV.InternetCrawler
 {
@@ -135,6 +136,30 @@ namespace ADV.InternetCrawler
                 this.PutMessages();
                 ICException.GetException(this.Messages);
             }
+        }
+
+        public List<DataPointStatsModel> GetDataPointStats()
+        {
+            List<DataPointStatsModel> l_dataPointStats = new List<DataPointStatsModel>();
+
+            try
+            {
+                var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
+                l_dataPointStats = l_containerObject.GetDataPointStats();
+
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Статистика успешно получена");
+            }
+            catch (Exception l_exc)
+            {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при получении статистики: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
+                ICException.GetException(this.Messages);
+            }
+
+            return l_dataPointStats;
         }
     }
 }

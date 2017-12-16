@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ADV.InternetCrawler.Models;
 
 namespace ADV.InternetCrawler.Interface
 {
@@ -14,5 +15,7 @@ namespace ADV.InternetCrawler.Interface
         DataPoint GetDataPoint(Int32 ID);
 
         List<DataPoint> GetDataPoints();
+
+        List<DataPointStatsModel> GetDataPointStats();
     }
 }

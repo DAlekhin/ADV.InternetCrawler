@@ -1,5 +1,6 @@
 ﻿using System;
 using ADV.InternetCrawler.Interface;
+using ADV.InternetCrawler.Models;
 using ADV.InternetCrawler.Utility.Logger.Interface;
 using ADV.InternetCrawler.Utility.Logger;
 using ADV.InternetCrawler.DataBase.EF;
@@ -248,6 +249,26 @@ namespace ADV.InternetCrawler.DataBase
             {
                 throw new Exception(l_exc.Message, l_exc);
             }
+        }
+
+        public List<DataPointStatsModel> GetDataPointStats()
+        {
+            List<DataPointStatsModel> l_dataPointStats = new List<DataPointStatsModel>();
+
+            try
+            {
+                using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
+                {
+                    var l_result = l_icEntity.Get_DataPointStats();
+                    l_dataPointStats.AddRange(l_result);
+                }
+            }
+            catch (Exception l_exc)
+            {
+                throw new Exception(l_exc.Message, l_exc);
+            }
+
+            return l_dataPointStats;
         }
     }
 }
