@@ -23,5 +23,6 @@ namespace ADV.InternetCrawler.DataBase.EF
         public decimal ItemPrice { get; set; }
         public decimal ItemDiscountPrice { get; set; }
         public string ItemPictureUri { get; set; }
+        public int PullScopeID { get; set; }
     }
 }

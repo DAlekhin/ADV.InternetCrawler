@@ -26,10 +26,15 @@ namespace ADV.InternetCrawler.DataBase.EF
             modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.PluralizingEntitySetNameConvention>();
             modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.PluralizingTableNameConvention>();
         }
-    
+
         public virtual DbSet<DataPoint> DataPoint { get; set; }
         public virtual DbSet<Logger> Logger { get; set; }
         public virtual DbSet<LoggerHeader> LoggerHeader { get; set; }
         public virtual DbSet<PointContent> PointContent { get; set; }
+
+        public virtual int Proc_GetDataPointStats()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_GetDataPointStats");
+        }
     }
 }

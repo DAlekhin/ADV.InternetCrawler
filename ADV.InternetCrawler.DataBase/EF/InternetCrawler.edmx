@@ -47,6 +47,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PullScopeID" Type="int" Nullable="false" />
           <Property Name="PointID" Type="int" Nullable="false" />
           <Property Name="SaveDateTime" Type="datetime" Nullable="false" />
           <Property Name="ItemName" Type="nvarchar(max)" Nullable="false" />
@@ -56,6 +57,7 @@
           <Property Name="ItemDiscountPrice" Type="decimal" Precision="18" Scale="10" Nullable="false" />
           <Property Name="ItemPictureUri" Type="nvarchar(max)" />
         </EntityType>
+        <Function Name="Proc_GetDataPointStats" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="Хранилище InternetCrawlerModelContainer">
           <EntitySet Name="DataPoint" EntityType="Self.DataPoint" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Logger" EntityType="Self.Logger" Schema="dbo" store:Type="Tables" />
@@ -116,12 +118,14 @@
           <Property Name="ItemPrice" Type="Decimal" Precision="18" Scale="10" Nullable="false" />
           <Property Name="ItemDiscountPrice" Type="Decimal" Precision="18" Scale="10" Nullable="false" />
           <Property Name="ItemPictureUri" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PullScopeID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="InternetCrawlerEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="DataPoint" EntityType="Self.DataPoint" />
           <EntitySet Name="Logger" EntityType="Self.Logger" />
           <EntitySet Name="LoggerHeader" EntityType="Self.LoggerHeader" />
           <EntitySet Name="PointContent" EntityType="Self.PointContent" />
+          <FunctionImport Name="Proc_GetDataPointStats" />
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -171,6 +175,7 @@
           <EntitySetMapping Name="PointContent">
             <EntityTypeMapping TypeName="InternetCrawlerModel.PointContent">
               <MappingFragment StoreEntitySet="PointContent">
+                <ScalarProperty Name="PullScopeID" ColumnName="PullScopeID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="PointID" ColumnName="PointID" />
                 <ScalarProperty Name="SaveDateTime" ColumnName="SaveDateTime" />
@@ -183,6 +188,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Proc_GetDataPointStats" FunctionName="Хранилище InternetCrawlerModel.Proc_GetDataPointStats" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
