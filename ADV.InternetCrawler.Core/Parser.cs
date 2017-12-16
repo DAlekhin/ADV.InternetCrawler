@@ -47,7 +47,7 @@ namespace ADV.InternetCrawler.Core
         { 
         }
 
-        public void PullRequest(DataPoint _dataPoint)
+        public List<Message> PullRequest(DataPoint _dataPoint)
         {
             dataPoint = _dataPoint;
 
@@ -76,12 +76,16 @@ namespace ADV.InternetCrawler.Core
 
                     if (CheckError())
                     {
+                        GetItemUriList(l_startBody);
+
                         System.Threading.Thread.Sleep((int)TimeSpan.FromSeconds(timePause).TotalMilliseconds);
 
                         String l_contentBody = PageBody.GetPageBody(l_fullUri);
 
                         GetItemUriList(l_contentBody);
                     }
+
+                    break;
                 }
 
                 if (CheckError())
@@ -93,6 +97,8 @@ namespace ADV.InternetCrawler.Core
             {
                 AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка инициализации парсера: {l_exc.Message}", l_exc);
             }
+
+            return this.Messages;
         }
 
         private void GetPageUriList(String _contentBody, Boolean _newIteration = true)
@@ -101,7 +107,8 @@ namespace ADV.InternetCrawler.Core
 
             try
             {
-                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Debug, $"Инициализация загрузки списка ссылок на товары со страниц.");
+                if (_newIteration)
+                    AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Debug, $"Инициализация загрузки списка ссылок на товары со страниц.");
 
                 Regex l_regexPages = new Regex(dataPoint.PageUri);
                 MatchCollection l_matchPages = l_regexPages.Matches(_contentBody);
@@ -119,13 +126,13 @@ namespace ADV.InternetCrawler.Core
                     GetPageUriList(PageBody.GetPageBody(l_maxPageUri), false);
                 }
 
-                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Debug, $"Получены индекс максимальный страницы - {l_numPages.Max()}");
-
                 if (l_numPages.Max() != pageNumbers.Max())
                 {
                     String l_maxPageUri = GetFullUri(dataPoint.PageUri, dataPoint.Uri);
                     GetPageUriList(PageBody.GetPageBody(l_maxPageUri), false);
                 }
+
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Debug, $"Получены индекс максимальный страницы в итерации - {l_numPages.Max()}");
 
                 pageNumbers = pageNumbers.Distinct().ToList();
             }
@@ -214,6 +221,9 @@ namespace ADV.InternetCrawler.Core
                         Regex l_regexItemDiscountPrice = new Regex(dataPoint.ItemDiscountPrice);
                         Match l_matchItemDiscountPrice = l_regexItemDiscountPrice.Match(l_contentBody);
 
+                        Regex l_regexItemPicture = new Regex(dataPoint.ItemPictureUri);
+                        Match l_matchItemPicture = l_regexItemPicture.Match(l_contentBody);
+
                         pointContents.Add(new PointContent
                         {
                             PointID = dataPoint.ID,
@@ -221,8 +231,11 @@ namespace ADV.InternetCrawler.Core
                             ItemArticle = l_matchItemArticle.Success ? l_matchItemArticle.Groups["Data"].Value : "",
                             ItemPrice = l_matchItemPrice.Success ? Double.Parse(l_matchItemPrice.Groups["Data"].Value) : 0,
                             ItemDiscountPrice = l_matchItemDiscountPrice.Success ? Double.Parse(l_matchItemDiscountPrice.Groups["Data"].Value) : 0,
-                            ItemUri = l_uri
+                            ItemUri = l_uri,
+                            ItemPictureUri = l_matchItemPicture.Success ? GetFullUri(l_matchItemPicture.Groups["Data"].Value, dataPoint.Uri) : ""
                         });
+
+                        AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, l_uri, MessageType.Info, $"Товар {l_matchItemName.Groups["Data"].Value} успешно сохранен.");
                     }
                     catch (Exception l_exc)
                     {

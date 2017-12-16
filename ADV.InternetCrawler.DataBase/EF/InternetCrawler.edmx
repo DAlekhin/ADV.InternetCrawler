@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище InternetCrawlerModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище InternetCrawlerModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DataPoint">
           <Key>
             <PropertyRef Name="ID" />
@@ -16,9 +16,9 @@
           <Property Name="ItemURI" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ItemName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ItemPrice" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ItemDeep" Type="bit" Nullable="false" />
           <Property Name="ItemDiscountPrice" Type="nvarchar(max)" />
           <Property Name="ItemArticle" Type="nvarchar(max)" />
+          <Property Name="ItemPictureURI" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Logger">
           <Key>
@@ -26,7 +26,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HeaderID" Type="int" Nullable="false" />
-          <Property Name="SubModuleName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ModuleName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ProccessDateTime" Type="datetime" Nullable="false" />
           <Property Name="URI" Type="nvarchar(max)" />
           <Property Name="Level" Type="int" Nullable="false" />
@@ -39,9 +39,8 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PointID" Type="int" />
-          <Property Name="StartSession" Type="datetime" Nullable="false" />
+          <Property Name="StartSession" Type="datetime" />
           <Property Name="FinishSession" Type="datetime" />
-          <Property Name="ModuleName" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="PointContent">
           <Key>
@@ -63,8 +62,7 @@
           <EntitySet Name="LoggerHeader" EntityType="Self.LoggerHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PointContent" EntityType="Self.PointContent" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InternetCrawlerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -79,9 +77,9 @@
           <Property Name="ItemURI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ItemName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ItemPrice" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ItemDeep" Type="Boolean" Nullable="false" />
           <Property Name="ItemDiscountPrice" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ItemArticle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ItemPictureURI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Logger">
           <Key>
@@ -102,7 +100,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PointID" Type="Int32" />
-          <Property Name="StartSession" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StartSession" Type="DateTime" Precision="3" />
           <Property Name="FinishSession" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="PointContent">
@@ -134,6 +132,7 @@
           <EntitySetMapping Name="DataPoint">
             <EntityTypeMapping TypeName="InternetCrawlerModel.DataPoint">
               <MappingFragment StoreEntitySet="DataPoint">
+                <ScalarProperty Name="ItemPictureURI" ColumnName="ItemPictureURI" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="URI" ColumnName="URI" />
@@ -141,7 +140,6 @@
                 <ScalarProperty Name="ItemURI" ColumnName="ItemURI" />
                 <ScalarProperty Name="ItemName" ColumnName="ItemName" />
                 <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
-                <ScalarProperty Name="ItemDeep" ColumnName="ItemDeep" />
                 <ScalarProperty Name="ItemDiscountPrice" ColumnName="ItemDiscountPrice" />
                 <ScalarProperty Name="ItemArticle" ColumnName="ItemArticle" />
               </MappingFragment>
@@ -152,7 +150,6 @@
               <MappingFragment StoreEntitySet="Logger">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="HeaderID" ColumnName="HeaderID" />
-                <ScalarProperty Name="ModuleName" ColumnName="SubModuleName" />
                 <ScalarProperty Name="ProccessDateTime" ColumnName="ProccessDateTime" />
                 <ScalarProperty Name="URI" ColumnName="URI" />
                 <ScalarProperty Name="Level" ColumnName="Level" />

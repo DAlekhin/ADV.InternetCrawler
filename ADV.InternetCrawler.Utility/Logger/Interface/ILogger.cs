@@ -11,7 +11,7 @@ namespace ADV.InternetCrawler.Utility.Logger.Interface
     {
         String ConnectionString { get; set; }
 
-        void GetNewHeaderID(Header LoggerHeader);
+        Int32 GetNewHeaderID();
 
         void PutLogMessages(Header LoggerHeader);
     }

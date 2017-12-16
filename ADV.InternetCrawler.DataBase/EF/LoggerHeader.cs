@@ -16,7 +16,7 @@ namespace ADV.InternetCrawler.DataBase.EF
     {
         public int ID { get; set; }
         public Nullable<int> PointID { get; set; }
-        public System.DateTime StartSession { get; set; }
+        public Nullable<System.DateTime> StartSession { get; set; }
         public Nullable<System.DateTime> FinishSession { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace ADV.InternetCrawler.Utility.Logger
         private Header logHeader = new Header();
         private List<Message> logMessages = new List<Message>();
         private Int32 pointID;
+        //private Int32 headerID;
 
         public List<Message> Messages
         {
@@ -37,7 +38,7 @@ namespace ADV.InternetCrawler.Utility.Logger
             }
         }
 
-        public LogMessages() 
+        public LogMessages()
         {
             logHeader.startSession = DateTime.UtcNow;
         }
@@ -47,12 +48,17 @@ namespace ADV.InternetCrawler.Utility.Logger
         //    try
         //    {
         //        var l_containerObject = (ILogger)Utility.Container.GetObject("DAL");
-        //        l_containerObject.GetNewHeaderID(logHeader);
+        //        headerID = l_containerObject.GetNewHeaderID();
         //    }
         //    catch (Exception l_exc)
         //    {
         //        throw new Exception(l_exc.Message, l_exc);
         //    }
+        //}
+
+        //public void SetHeaderID(Int32 _headerID)
+        //{
+        //    headerID = _headerID;
         //}
 
         public void AddToMessage(String _moduleName, String _uri, MessageType _messageType, String _message)
@@ -79,13 +85,18 @@ namespace ADV.InternetCrawler.Utility.Logger
             logMessages.Add(_message);
         }
 
+        public void AddToMessages(List<Message> _messages)
+        {
+            logMessages.AddRange(_messages);
+        }
+
         public void PutMessages()
         {
             try
             {
                 logHeader.pointID = pointID;
                 logHeader.finishSession = DateTime.UtcNow;
-                logHeader.messages= logMessages;
+                logHeader.messages = logMessages;
 
                 var l_containerObject = (ILogger)Utility.Container.GetObject("DAL");
                 l_containerObject.PutLogMessages(logHeader);
@@ -94,6 +105,11 @@ namespace ADV.InternetCrawler.Utility.Logger
             {
                 throw new Exception(l_exc.Message, l_exc);
             }
+        }
+
+        public List<Message> ReturnMessages()
+        {
+            return logMessages;
         }
 
         public Boolean CheckError()

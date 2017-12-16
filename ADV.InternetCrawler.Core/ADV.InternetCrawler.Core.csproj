@@ -43,6 +43,7 @@
     <Compile Include="PageBody.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\Parser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADV.InternetCrawler.Utility\ADV.InternetCrawler.Utility.csproj">

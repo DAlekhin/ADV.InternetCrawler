@@ -21,8 +21,8 @@ namespace ADV.InternetCrawler.DataBase.EF
         public string ItemURI { get; set; }
         public string ItemName { get; set; }
         public string ItemPrice { get; set; }
-        public bool ItemDeep { get; set; }
         public string ItemDiscountPrice { get; set; }
         public string ItemArticle { get; set; }
+        public string ItemPictureURI { get; set; }
     }
 }

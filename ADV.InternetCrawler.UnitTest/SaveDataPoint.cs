@@ -21,7 +21,8 @@ namespace ADV.InternetCrawler.UnitTest
                     ItemName = "<h1 class=\"product\\s*-\\s*title\"[^>]+>(?<Data>[^<]+)</h1>",
                     ItemArticle = "<h3 class=\"product\\s*-\\s*code\">\\s*Артикул:\\s*(?<Data>[^<]+)</h3>",
                     ItemPrice = "<span class=\"price\\s*-\\s*sales\\s*product\\s*-\\s*price\">\\s*(?<Data>[^<]+)<",
-                    ItemDiscountPrice = "<span class=\"skidkapokarte\"[^>]+>(?<Data>[^<]+)<|<span class=\"price\\s*-\\s*standard product\\s*-\\s*price\">(?<Data>[^<]+)<"
+                    ItemDiscountPrice = "<span class=\"skidkapokarte\"[^>]+>(?<Data>[^<]+)<|<span class=\"price\\s*-\\s*standard product\\s*-\\s*price\">(?<Data>[^<]+)<",
+                    ItemPictureUri = "<div class=\"slider\\s*-\\s*for\">\\s*(<div>\\s*)?<img\\s*src\\s*=\\s*\"(?<Data>[^\"]+)\""
                 };
 
                 l_dataPoint.Save();

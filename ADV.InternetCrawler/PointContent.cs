@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ADV.InternetCrawler.Interface;
 using ADV.InternetCrawler.Utility.Logger;
 using System.Reflection;
+using ADV.InternetCrawler.Utility;
 
 namespace ADV.InternetCrawler
 {
@@ -130,6 +131,7 @@ namespace ADV.InternetCrawler
             finally
             {
                 this.PutMessages();
+                ICException.GetException(this.Messages);
             }
         }
     }

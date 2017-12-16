@@ -1,0 +1,49 @@
+﻿@using ADV.InternetCrawler.ControlPanel.Models
+@model DataPointStatsModel
+
+@Styles.Render("~/Content/dataTables")
+
+<article class="content items-list-page">
+    <div class="title-search-block">
+        <div class="title-block">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="title">
+                        Список точек загрузки данных
+                        <a href="item-editor.html" class="btn btn-primary btn-sm rounded-s"> Добавить </a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card items">
+        <table id="dataPoints" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.ID)</th>
+                    <th>@Html.DisplayNameFor(m => m.Name)</th>
+                    <th>@Html.DisplayNameFor(m => m.Items)</th>
+                    <th>@Html.DisplayNameFor(m => m.Rounds)</th>
+                    <th>@Html.DisplayNameFor(m => m.LastRound)</th>
+                    <th>@Html.DisplayNameFor(m => m.Errors)</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+        </table>
+
+        <script>
+            $(document).ready(function () {
+                $('#dataPoints').DataTable({
+                    "ajax": {
+                    "url": "@Html.Raw(Url.Action("GetJsonDataPointStats", "DataPoint", new { }))",
+                    "type": "POST",
+                    "datatype": "json"
+                    }
+                });
+            });
+        </script>
+    </div>
+</article>
+
+@Scripts.Render("~/bundles/dataTables")
+

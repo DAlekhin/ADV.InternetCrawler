@@ -19,7 +19,7 @@ namespace ADV.InternetCrawler
         private String itemArticle;
         private String itemPrice;
         private String itemDiscountPrice;
-        private Boolean itemDeep;
+        private String itemPictureUri;
 
         public Int32 ID
         {
@@ -130,15 +130,15 @@ namespace ADV.InternetCrawler
             }
         }
 
-        public Boolean ItemDeep
+        public String ItemPictureUri
         {
             get
             {
-                return itemDeep;
+                return itemPictureUri;
             }
             set
             {
-                itemDeep = value;
+                itemPictureUri = value;
             }
         }
 
@@ -168,6 +168,7 @@ namespace ADV.InternetCrawler
             finally
             {
                 this.PutMessages();
+                ICException.GetException(this.Messages);
             }
         }
 

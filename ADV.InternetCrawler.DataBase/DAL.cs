@@ -46,7 +46,7 @@ namespace ADV.InternetCrawler.DataBase
                             ItemArticle = _dataPoint.ItemArticle,
                             ItemPrice = _dataPoint.ItemPrice,
                             ItemDiscountPrice = _dataPoint.ItemDiscountPrice,
-                            ItemDeep = _dataPoint.ItemDeep
+                            ItemPictureURI = _dataPoint.ItemPictureUri
                         };
 
                         l_icEntity.DataPoint.Add(l_dataPoint);
@@ -66,7 +66,7 @@ namespace ADV.InternetCrawler.DataBase
                         l_dataPoint.ItemArticle = _dataPoint.ItemArticle;
                         l_dataPoint.ItemPrice = _dataPoint.ItemPrice;
                         l_dataPoint.ItemDiscountPrice = _dataPoint.ItemDiscountPrice;
-                        l_dataPoint.ItemDeep = _dataPoint.ItemDeep;
+                        l_dataPoint.ItemPictureURI = _dataPoint.ItemPictureUri;
 
                         l_icEntity.SaveChanges();
                     }
@@ -99,7 +99,7 @@ namespace ADV.InternetCrawler.DataBase
                         ItemArticle = s.ItemArticle,
                         ItemPrice = s.ItemPrice,
                         ItemDiscountPrice = s.ItemDiscountPrice,
-                        ItemDeep = s.ItemDeep
+                        ItemPictureUri = s.ItemPictureURI
                     }).FirstOrDefault();
 
                     if (l_dataPoint == null)
@@ -135,7 +135,7 @@ namespace ADV.InternetCrawler.DataBase
                         ItemArticle = s.ItemArticle,
                         ItemPrice = s.ItemPrice,
                         ItemDiscountPrice = s.ItemDiscountPrice,
-                        ItemDeep = s.ItemDeep
+                        ItemPictureUri = s.ItemPictureURI
                     }));
                 };
             }
@@ -179,28 +179,33 @@ namespace ADV.InternetCrawler.DataBase
             }
         }
 
-        public void GetNewHeaderID(Header _loggerHeader)
+        public Int32 GetNewHeaderID()
         {
+            Int32 l_headerID = 0;
             try
             {
                 using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
                 {
                     EF.LoggerHeader l_loggerHeader = new EF.LoggerHeader()
                     {
-                        PointID = _loggerHeader.pointID,
-                        StartSession = _loggerHeader.startSession
+                        StartSession = DateTime.UtcNow
                     };
 
                     l_icEntity.LoggerHeader.Add(l_loggerHeader);
                     l_icEntity.SaveChanges();
 
-                    _loggerHeader.id = l_loggerHeader.ID;
+                    l_headerID = l_loggerHeader.ID;
                 }
+
+                if (l_headerID == 0)
+                    throw new Exception($"Невозможно получить новый номер заголовка журналирования.");
             }
             catch (Exception l_exc)
             {
                 throw new Exception(l_exc.Message, l_exc);
             }
+
+            return l_headerID;
         }
 
         public void PutLogMessages(Header _loggerHeader)
@@ -230,7 +235,7 @@ namespace ADV.InternetCrawler.DataBase
                                 URI = l_message.uri,
                                 Level = (int)l_message.messageType,
                                 Message = l_message.message,
-                                Exception = l_message.exception == null ? null : l_message.exception.ToString()
+                                Exception = l_message.exception?.ToString()
                             };
 
                             l_icEntity.Logger.Add(l_logger);

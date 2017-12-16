@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADV.InternetCrawler.UnitTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADV.InternetCrawler.Core", "ADV.InternetCrawler.Core\ADV.InternetCrawler.Core.csproj", "{F64C0E9A-E5E0-4AAA-8D4E-F3ACE8384FA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADV.InternetCrawler.ControlPanel", "ADV.InternetCrawler.ControlPanel\ADV.InternetCrawler.ControlPanel.csproj", "{EF326D53-59F2-4EF4-9B49-C9E6576E254F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADV.InternetCrawler.ControlPanel.UnitTests", "ADV.InternetCrawler.ControlPanel.UnitTests\ADV.InternetCrawler.ControlPanel.UnitTests.csproj", "{2420F7CB-7FB0-4C67-BEA2-17F0D88659C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{F64C0E9A-E5E0-4AAA-8D4E-F3ACE8384FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F64C0E9A-E5E0-4AAA-8D4E-F3ACE8384FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F64C0E9A-E5E0-4AAA-8D4E-F3ACE8384FA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF326D53-59F2-4EF4-9B49-C9E6576E254F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF326D53-59F2-4EF4-9B49-C9E6576E254F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF326D53-59F2-4EF4-9B49-C9E6576E254F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF326D53-59F2-4EF4-9B49-C9E6576E254F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2420F7CB-7FB0-4C67-BEA2-17F0D88659C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2420F7CB-7FB0-4C67-BEA2-17F0D88659C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2420F7CB-7FB0-4C67-BEA2-17F0D88659C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2420F7CB-7FB0-4C67-BEA2-17F0D88659C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
