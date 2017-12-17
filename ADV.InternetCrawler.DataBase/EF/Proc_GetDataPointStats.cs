@@ -12,11 +12,8 @@ namespace ADV.InternetCrawler.DataBase.EF
     using System;
     using System.Collections.Generic;
     using ADV.InternetCrawler.Models;
-    using System.ComponentModel.DataAnnotations;
-    
+
     public partial class Proc_GetDataPointStats : DataPointStatsModel
     {
-        [Key]
-        new public int PointID { get; set; }
     }
 }

@@ -125,20 +125,16 @@
           <EntitySet Name="Logger" EntityType="Self.Logger" />
           <EntitySet Name="LoggerHeader" EntityType="Self.LoggerHeader" />
           <EntitySet Name="PointContent" EntityType="Self.PointContent" />
-          <EntitySet Name="Proc_GetDataPointStats" EntityType="InternetCrawlerModel.Proc_GetDataPointStats" />
-          <FunctionImport Name="Get_DataPointStats" EntitySet="Proc_GetDataPointStats" ReturnType="Collection(InternetCrawlerModel.Proc_GetDataPointStats)" />
+          <FunctionImport Name="Get_DataPointStats" ReturnType="Collection(InternetCrawlerModel.Proc_GetDataPointStats)" />
         </EntityContainer>
-        <EntityType Name="Proc_GetDataPointStats" >
-          <Key>
-            <PropertyRef Name="PointID" />
-          </Key>
-          <Property Name="PointID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" />
-          <Property Name="Items" Type="Int32" Nullable="false" />
-          <Property Name="Rounds" Type="Int32" Nullable="false" />
-          <Property Name="LastRound" Type="DateTime" Nullable="false" />
-          <Property Name="Errors" Type="Boolean" Nullable="false" />
-        </EntityType>
+        <ComplexType Name="Proc_GetDataPointStats" >
+          <Property Type="Int32" Name="PointID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="Int32" Name="Items" Nullable="false" />
+          <Property Type="Int32" Name="Rounds" Nullable="false" />
+          <Property Type="DateTime" Name="LastRound" Nullable="false" />
+          <Property Type="Boolean" Name="Errors" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -200,7 +196,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="Get_DataPointStats" FunctionName="Хранилище InternetCrawlerModel.Proc_GetDataPointStats" />
+          <FunctionImportMapping FunctionImportName="Get_DataPointStats" FunctionName="Хранилище InternetCrawlerModel.Proc_GetDataPointStats" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InternetCrawlerModel.Proc_GetDataPointStats">
+                <ScalarProperty Name="PointID" ColumnName="PointID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Items" ColumnName="Items" />
+                <ScalarProperty Name="Rounds" ColumnName="Rounds" />
+                <ScalarProperty Name="LastRound" ColumnName="LastRound" />
+                <ScalarProperty Name="Errors" ColumnName="Errors" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

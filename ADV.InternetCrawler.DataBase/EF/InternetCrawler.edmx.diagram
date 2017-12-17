@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="InternetCrawlerModel.Logger" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="InternetCrawlerModel.LoggerHeader" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="InternetCrawlerModel.PointContent" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InternetCrawlerModel.Proc_GetDataPointStats" Width="1.5" PointX="8.25" PointY="0.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

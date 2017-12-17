@@ -6,6 +6,7 @@ namespace ADV.InternetCrawler.Models
 {
     public class DataPointStatsModel
     {
+        [Key]
         [Display(Name = "#")]
         public int PointID { get; set; }
 
@@ -16,7 +17,7 @@ namespace ADV.InternetCrawler.Models
         public int Rounds { get; set; }
 
         [Display(Name = "Кол-во Товаров")]
-        public string Items { get; set; }
+        public int Items { get; set; }
 
         [Display(Name = "Дата Посл. Обхода")]
         public DateTime LastRound { get; set; }
