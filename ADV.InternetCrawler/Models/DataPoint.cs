@@ -23,6 +23,6 @@ namespace ADV.InternetCrawler.Models
         public DateTime LastRound { get; set; }
 
         [Display(Name = "Ошибки")]
-        public bool Errors { get; set; }
+        public bool Error { get; set; }
     }
 }

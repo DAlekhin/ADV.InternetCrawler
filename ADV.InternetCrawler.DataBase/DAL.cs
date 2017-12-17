@@ -154,7 +154,9 @@ namespace ADV.InternetCrawler.DataBase
             {
                 using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
                 {
-                    foreach(PointContent l_pointContent in _pointContent)
+                    Int32 l_pullScopeID = l_icEntity.PointContent.Max(m => m.PullScopeID) + 1;
+
+                    foreach (PointContent l_pointContent in _pointContent)
                     {
                         EF.PointContent l_efPointContent = new EF.PointContent()
                         {
@@ -165,7 +167,8 @@ namespace ADV.InternetCrawler.DataBase
                             ItemDiscountPrice = (Decimal)l_pointContent.ItemDiscountPrice,
                             ItemUri = l_pointContent.ItemUri,
                             ItemPictureUri = l_pointContent.ItemPictureUri,
-                            SaveDateTime = DateTime.Now
+                            SaveDateTime = DateTime.Now,
+                            PullScopeID = l_pullScopeID
                         };
 
                         l_icEntity.PointContent.Add(l_efPointContent);

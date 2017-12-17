@@ -1,8 +1,6 @@
 ﻿@using ADV.InternetCrawler.Models
 @model DataPointStatsModel
 
-@Styles.Render("~/Content/dataTables")
-
 <article class="content items-list-page">
     <div class="title-search-block">
         <div class="title-block">
@@ -17,33 +15,119 @@
         </div>
     </div>
     <div class="card items">
-        <table id="dataPoints" class="display" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(m => m.PointID)</th>
-                    <th>@Html.DisplayNameFor(m => m.Name)</th>
-                    <th>@Html.DisplayNameFor(m => m.Items)</th>
-                    <th>@Html.DisplayNameFor(m => m.Rounds)</th>
-                    <th>@Html.DisplayNameFor(m => m.LastRound)</th>
-                    <th>@Html.DisplayNameFor(m => m.Errors)</th>
-                    <th>Действия</th>
-                </tr>
-            </thead>
-        </table>
+        <div class="card-block">
+            <section class="table">
+                <table id="dataPoints" class="table dt-responsive row-border hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.PointID)</th>
+                            <th>@Html.DisplayNameFor(m => m.Name)</th>
+                            <th>@Html.DisplayNameFor(m => m.Items)</th>
+                            <th>@Html.DisplayNameFor(m => m.Rounds)</th>
+                            <th>@Html.DisplayNameFor(m => m.LastRound)</th>
+                            <th>@Html.DisplayNameFor(m => m.Errors)</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                </table>
+                </section>
+        </div>
+        </div>
+</article>
 
-        <script>
+<script type="text/javascript">
             $(document).ready(function () {
                 $('#dataPoints').DataTable({
+                    //"processing": true,
+                    //"serverSide": true,
+                    "iDisplayLength": 50,
+                    //"responsive": true,
                     "ajax": {
-                    "url": "@Html.Raw(Url.Action("GetJsonDataPointStats", "DataPoint", new { }))",
-                    "type": "POST",
-                    "datatype": "json"
+                        "url": "@Html.Raw(Url.Action("GetDataPointStats", "DataPoint"))",
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        {
+                            "data": "PointID",
+                            "orderable": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Name",
+                            "orderable": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Items",
+                            "orderable": true,
+                            "searchable": false
+                        },
+                        {
+                            "data": "Rounds",
+                            "orderable": true,
+                            "searchable": false
+                        },
+                        {
+                            "data": "LastRound",
+                            "orderable": true,
+                            "searchable": true,
+                            "render": function (data, type, row, meta) {
+                                var result = new Date(parseInt(row.LastRound.replace('/Date(', '')));
+                                return result.format('dd.m.yyyy HH:MM');
+                            }
+                        },
+                        {
+                            "data": "Error",
+                            "orderable": true,
+                            "searchable": true,
+                            "render": function (data, type, row, meta) {
+                                var result = ''
+
+                                if (row.Errors)
+                                    result = 'ДА';
+                                else
+                                    result = 'НЕТ';
+
+                                return result;
+                            }
+                        },
+                        {
+                            "data": "PointID",
+                            "orderable": true,
+                            "searchable": true,
+                            "render": function (data, type, row, meta) {
+                                var result = ''
+
+                                result = '';
+
+                                return result;
+                            }
+                        }
+                    ],
+                    "order": [[0, "asc"]],
+                    "language": {
+                        "processing": "Подождите...",
+                        "search": "Поиск:",
+                        "lengthMenu": "Показать _MENU_ записей",
+                        "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                        "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                        "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                        "infoPostFix": "",
+                        "loadingRecords": "Загрузка записей...",
+                        "zeroRecords": "Записи отсутствуют.",
+                        "emptyTable": "В таблице отсутствуют данные",
+                        "paginate": {
+                            "first": "Первая",
+                            "previous": "Предыдущая",
+                            "next": "Следующая",
+                            "last": "Последняя"
+                        },
+                        "aria": {
+                            "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                            "sortDescending": ": активировать для сортировки столбца по убыванию"
+                        }
                     }
                 });
             });
-        </script>
-    </div>
-</article>
-
-@Scripts.Render("~/bundles/dataTables")
-
+</script>

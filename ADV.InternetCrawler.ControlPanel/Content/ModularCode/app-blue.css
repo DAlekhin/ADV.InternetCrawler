@@ -4716,3 +4716,66 @@ span a
         margin-top: 8px;
     }
 }
+
+/*
+Tables style
+*/
+.table > thead > tr > th
+{
+    border-bottom: 1px solid #DDDDDD !important;
+    vertical-align: bottom !important;
+}
+
+div.dataTables_paginate a
+{
+    display: inline-block !important;
+    padding: 1px 10px !important;
+    font-size: 13px !important;
+    border: 1px solid #eee !important;
+    color: #666 !important;
+    margin: 1px !important;
+    cursor: pointer !important;
+}
+
+    div.dataTables_paginate a.disabled
+    {
+        cursor: not-allowed !important;
+    }
+
+    div.dataTables_paginate a:hover, div.dataTables_paginate a.current
+    {
+        background: #eee !important;
+    }
+
+@media (min-width: 768px)
+{
+    .dataTables_length, .dataTables_info
+    {
+        float: left !important;
+        width: 50% !important;
+    }
+}
+
+div.dataTables_filter input
+{
+    margin-left: 0.5em !important;
+    display: inline-block !important;
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+}
+
+    div.dataTables_filter input:focus
+    {
+        outline: 0 !important;
+    }
+
+div.dataTables_length select
+{
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+}
+
+    div.dataTables_length select:focus
+    {
+        outline: 0 !important;
+    }

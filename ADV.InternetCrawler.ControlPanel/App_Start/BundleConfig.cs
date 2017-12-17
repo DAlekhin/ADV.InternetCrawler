@@ -9,19 +9,23 @@ namespace ADV.InternetCrawler.ControlPanel
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-3.2.1.js",
+                        "~/Scripts/jquery.validate.min.js",
+                        "~/Scripts/jquery.validate.unobtrusive.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ModularCode").Include(
                         "~/Scripts/ModularCode/vendor.js",
                         "~/Scripts/ModularCode/app.js"
                         ));
 
-            bundles.Add(new ScriptBundle("~/bundles/dataTables").Include(
-                        "~/Scripts/dataTables/datatables.min.js"
+            bundles.Add(new ScriptBundle("~/bundles/DataTables").Include(
+                        "~/Scripts/DataTables/jquery.dataTables.min.js",
+                        "~/Scripts/DataTables/dataTables.responsive.min.js"
                         ));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+            bundles.Add(new ScriptBundle("~/bundles/Custom").Include(
+                        "~/Scripts/date.format.js"
+                        ));
 
             // Используйте версию Modernizr для разработчиков, чтобы учиться работать. Когда вы будете готовы перейти к работе,
             // готово к выпуску, используйте средство сборки по адресу https://modernizr.com, чтобы выбрать только необходимые тесты.
@@ -32,8 +36,9 @@ namespace ADV.InternetCrawler.ControlPanel
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/dataTables").Include(
-                         "~/Scripts/datatables.min.js"
+            bundles.Add(new StyleBundle("~/Content/DataTables").Include(
+                    "~/Content/DataTables/css/jquery.dataTables.css",
+                    "~/Content/DataTables/css/responsive.bootstrap.css"
                          ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
