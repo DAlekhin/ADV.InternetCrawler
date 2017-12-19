@@ -22,7 +22,7 @@
                     </button>
                 </div>
                 <div class="header-block header-block-nav">
-                    @Html.Partial("_LoginPartial")
+                    @*@Html.Partial("_LoginPartial")*@
                 </div>
             </header>
             <aside class="sidebar">
@@ -47,7 +47,7 @@
                                 </a>
                                 <ul class="sidebar-nav">
                                     <li>
-                                        <a href="items-list.html"> Создать </a>
+                                        @Html.ActionLink("Создать", "EditDataPoint", "DataPoint")
                                     </li>
                                     <li>
                                         @Html.ActionLink("Список", "ShowDataPoint", "DataPoint")

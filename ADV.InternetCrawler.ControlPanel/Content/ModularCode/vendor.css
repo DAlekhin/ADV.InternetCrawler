@@ -20666,3 +20666,22 @@ a.text-dark:focus, a.text-dark:hover
             white-space: nowrap;
             margin: 0.1em 0
         }
+
+.vmiddleright
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: end;
+}
+
+div .id
+{
+    width: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 12px;
+    color: #4f5f6f;
+    background-color: #d7dde4;
+}

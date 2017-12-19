@@ -519,7 +519,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\DataPoint\NewDataPoint.cshtml" />
+    <Content Include="Views\DataPoint\EditDataPoint.cshtml" />
     <Content Include="Views\DataPoint\ShowDataPoint.cshtml" />
   </ItemGroup>
   <ItemGroup>

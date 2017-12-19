@@ -133,7 +133,7 @@
           <Property Type="Int32" Name="Items" Nullable="false" />
           <Property Type="Int32" Name="Rounds" Nullable="false" />
           <Property Type="DateTime" Name="LastRound" Nullable="false" />
-          <Property Type="Boolean" Name="Errors" Nullable="false" />
+          <Property Type="Boolean" Name="Error" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -204,7 +204,7 @@
                 <ScalarProperty Name="Items" ColumnName="Items" />
                 <ScalarProperty Name="Rounds" ColumnName="Rounds" />
                 <ScalarProperty Name="LastRound" ColumnName="LastRound" />
-                <ScalarProperty Name="Errors" ColumnName="Errors" />
+                <ScalarProperty Name="Error" ColumnName="Errors" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

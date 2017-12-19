@@ -1,0 +1,268 @@
+﻿@using ADV.InternetCrawler.ControlPanel.Models
+@model DataPointEditModel
+
+<article class="content items-list-page">
+    <div class="title-search-block">
+        <div class="title-block">
+            <div class="row">
+                <div class="col-xs-6">
+                    <h3 class="title">
+                        @(Model == null ? "Добавить" : "Редактировать") новую точку загрузки данных
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card items">
+        <div class="card-block">
+            <section class="table">
+                <div class="row sameheight-container">
+                    <div class="col-xs-12">
+                        <div class="card card-block">
+                            <div class="row sameheight-container">
+                                <div class="col-xs-2 vmiddleright">
+                                    @Html.LabelFor(model => model.Name)
+                                </div>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control underlined">
+                                </div>
+                                @if (Model != null)
+            {
+                    <div class="col-xs-offset-5 col-xs-1 pull-right">
+                        <div class="id">1</div>
+                    </div>
+}
+                            </div>
+                            <div class="row sameheight-container">
+                                <div class="col-xs-2 vmiddleright">
+                                    @Html.LabelFor(model => model.URI)
+                                </div>
+                                <div class="col-xs-8">
+                                    <input type="text" class="form-control underlined">
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="card card-block">
+                            <div class="title-block">
+                                <h3 class="title"> @Html.DisplayNameFor(model => model.PageURIStart) </h3>
+                            </div>
+                            <div class="row sameheight-container">
+                                <div class="col-xs-offset-1 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Начало выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Данные</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Окончание выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="card card-block">
+                            <div class="title-block">
+                                <h3 class="title"> @Html.DisplayNameFor(model => model.ItemURIStart) </h3>
+                            </div>
+                            <div class="row sameheight-container">
+                                <div class="col-xs-offset-1 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Начало выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Данные</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Окончание выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="card card-block">
+                            <div class="title-block">
+                                <h3 class="title"> @Html.DisplayNameFor(model => model.ItemURIStart) </h3>
+                            </div>
+                            <div class="row sameheight-container">
+                                <div class="col-xs-offset-1 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Начало выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Данные</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Окончание выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="card card-block">
+                            <div class="title-block">
+                                <h3 class="title"> @Html.DisplayNameFor(model => model.ItemNameStart) </h3>
+                            </div>
+                            <div class="row sameheight-container">
+                                <div class="col-xs-offset-1 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Начало выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Данные</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Окончание выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="card card-block">
+                            <div class="title-block">
+                                <h3 class="title"> @Html.DisplayNameFor(model => model.ItemPriceStart) </h3>
+                            </div>
+                            <div class="row sameheight-container">
+                                <div class="col-xs-offset-1 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Начало выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Данные</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Окончание выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="card card-block">
+                            <div class="title-block">
+                                <h3 class="title"> @Html.DisplayNameFor(model => model.ItemDiscountPriceStart) </h3>
+                            </div>
+                            <div class="row sameheight-container">
+                                <div class="col-xs-offset-1 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Начало выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Данные</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Окончание выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="card card-block">
+                            <div class="title-block">
+                                <h3 class="title"> @Html.DisplayNameFor(model => model.ItemArticleStart) </h3>
+                            </div>
+                            <div class="row sameheight-container">
+                                <div class="col-xs-offset-1 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Начало выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Данные</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Окончание выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="card card-block">
+                            <div class="title-block">
+                                <h3 class="title"> @Html.DisplayNameFor(model => model.ItemPictureUriStart) </h3>
+                            </div>
+                            <div class="row sameheight-container">
+                                <div class="col-xs-offset-1 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Начало выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Данные</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Окончание выражения</label>
+                                        <input type="text" class="form-control underlined">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-oval btn-primary btn-lg pull-right">Применить</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</article>
+
