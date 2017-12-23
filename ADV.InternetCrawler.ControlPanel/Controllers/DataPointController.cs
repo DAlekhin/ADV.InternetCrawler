@@ -63,6 +63,10 @@ namespace ADV.InternetCrawler.ControlPanel.Controllers
                         ItemPictureUriFinish = SeparateRegex(l_dataPoint.ItemPictureUri, "Finish")
                     };
                 }
+                else
+                {
+                    l_model = new DataPointEditModel();
+                }
             }
             catch
             {

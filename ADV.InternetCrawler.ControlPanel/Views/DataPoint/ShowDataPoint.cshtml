@@ -26,7 +26,7 @@
                             <th>@Html.DisplayNameFor(m => m.Rounds)</th>
                             <th>@Html.DisplayNameFor(m => m.LastRound)</th>
                             <th>@Html.DisplayNameFor(m => m.Error)</th>
-                            <th>Действия</th>
+                            <th></th>
                         </tr>
                     </thead>
                 </table>
@@ -94,12 +94,12 @@
                         },
                         {
                             "data": "PointID",
-                            "orderable": true,
-                            "searchable": true,
+                            "orderable": false,
+                            "searchable": false,
                             "render": function (data, type, row, meta) {
                                 var result = ''
 
-                                result = '';
+                                result = '<a class="edit" href="@Url.Action("EditDataPoint", "DataPoint")/' + row.PointID + '"><i class="fa fa-pencil"></i></a><a class="remove" href="#" data-toggle="modal" data-target="#confirm-modal"><i class="fa fa-trash-o"></i></a>';
 
                                 return result;
                             }

@@ -2291,6 +2291,20 @@ label,
                     color: #DB0E1E;
                 }
 
+a.edit
+{
+    padding: 0 7px;
+    font-size: 16px;
+    color: #38424C;
+}
+
+a.remove
+{
+    padding: 0 7px;
+    font-size: 16px;
+    color: #DB0E1E;
+}
+
 /* *******************************************
 *				Adjustments
 ********************************************** */
