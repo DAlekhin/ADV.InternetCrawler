@@ -172,6 +172,47 @@ namespace ADV.InternetCrawler
             }
         }
 
+        public void Clean()
+        {
+            try
+            {
+                var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
+                l_containerObject.CleanDataPoint(this.PointID);
+
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Очищена точка данных {id}");
+            }
+            catch (Exception l_exc)
+            {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при очищении точки данных: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
+                ICException.GetException(this.Messages);
+            }
+        }
+
+        public void Remove()
+        {
+            try
+            {
+                var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
+                l_containerObject.RemoveDataPoint(this.PointID);
+
+                this.PointID = this.id;
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Удалена точка данных {id}");
+            }
+            catch (Exception l_exc)
+            {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при удалении точки данных: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
+                ICException.GetException(this.Messages);
+            }
+        }
+
         private void CheckConnect()
         {
             HttpStatusCode l_statusCode;

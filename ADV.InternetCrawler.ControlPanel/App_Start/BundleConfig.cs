@@ -11,7 +11,8 @@ namespace ADV.InternetCrawler.ControlPanel
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-3.2.1.js",
                         "~/Scripts/jquery.validate.min.js",
-                        "~/Scripts/jquery.validate.unobtrusive.min.js"));
+                        "~/Scripts/jquery.validate.unobtrusive.min.js",
+                        "~/Scripts/clipboard.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ModularCode").Include(
                         "~/Scripts/ModularCode/vendor.js",

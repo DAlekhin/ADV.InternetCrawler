@@ -7,8 +7,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <h3 class="title">
-                        Список точек загрузки данных
-                        @*@Html.ActionLink("Добавить", "ShowDataPoint", "DataPoint", new { @class = "btn btn-primary btn-sm rounded-s" })*@
+                        @ViewBag.Title
                     </h3>
                 </div>
             </div>
@@ -25,8 +24,9 @@
                             <th>@Html.DisplayNameFor(m => m.Items)</th>
                             <th>@Html.DisplayNameFor(m => m.Rounds)</th>
                             <th>@Html.DisplayNameFor(m => m.LastRound)</th>
-                            <th>@Html.DisplayNameFor(m => m.Error)</th>
-                            <th></th>
+                            <th>@Html.DisplayNameFor(m => m.NextRound)</th>
+                            <th>@Html.DisplayNameFor(m => m.ErrorLink)</th>
+                            <th>Действия</th>
                         </tr>
                     </thead>
                 </table>
@@ -36,6 +36,28 @@
 </article>
 
 <script type="text/javascript">
+    function LaunchDataPoint(PointID) {
+        $.ajax({
+            type: "POST",
+            url: "@(Url.Action("LaunchDataPoint", "DataPoint"))",
+            data: {
+                PointID: PointID
+            },
+            async: true
+        });
+        $("#aLaunch" + PointID).removeClass("launch");
+        $("#aLaunch" + PointID).addClass("launch-disabled");
+        $("#aLaunch" + PointID).addClass("btn disabled");
+        $("#aRemove" + PointID).addClass("btn disabled");
+        $("#aClean" + PointID).addClass("btn disabled");
+    }
+
+    function ConfirmAction(URL, Name) {
+        if (confirm('Подтвердите ' + Name)) {
+            window.location = URL;
+        }
+    }
+
             $(document).ready(function () {
                 $('#dataPoints').DataTable({
                     //"processing": true,
@@ -74,18 +96,27 @@
                             "searchable": true,
                             "render": function (data, type, row, meta) {
                                 var result = new Date(parseInt(row.LastRound.replace('/Date(', '')));
-                                return result.format('dd.m.yyyy HH:MM');
+                                return result.format('dd.mm HH:MM');
                             }
                         },
                         {
-                            "data": "Error",
+                            "data": "NextRound",
+                            "orderable": true,
+                            "searchable": true,
+                            "render": function (data, type, row, meta) {
+                                var result = new Date(parseInt(row.NextRound.replace('/Date(', '')));
+                                return result.format('dd.mm HH:MM');
+                            }
+                        },
+                        {
+                            "data": "ErrorLink",
                             "orderable": true,
                             "searchable": true,
                             "render": function (data, type, row, meta) {
                                 var result = ''
 
-                                if (row.Errors)
-                                    result = 'ДА';
+                                if (row.ErrorLink != 0)
+                                    result = '<a href="@Url.Action("ShowDataPointLog", "DataPoint")?HeaderID=' + row.ErrorLink + '" target="_blank">ДА</a>';
                                 else
                                     result = 'НЕТ';
 
@@ -99,7 +130,28 @@
                             "render": function (data, type, row, meta) {
                                 var result = ''
 
-                                result = '<a class="edit" href="@Url.Action("EditDataPoint", "DataPoint")/' + row.PointID + '"><i class="fa fa-pencil"></i></a><a class="remove" href="#" data-toggle="modal" data-target="#confirm-modal"><i class="fa fa-trash-o"></i></a>';
+                                if (row.Ready) {
+                                    result = '<a class="launch" id="aLaunch' + row.PointID + '" href="javascript:LaunchDataPoint(' + row.PointID + ')"><i class="fa fa-play"></i></a>';
+                                }
+                                else {
+                                    result = '<a class="launch-disabled" id="aLaunch' + row.PointID + '"><i class="fa fa-play"></i></a>';
+                                }
+
+                                result = result + '<a class="edit" href="@Url.Action("EditDataPoint", "DataPoint")/' + row.PointID + '"><i class="fa fa-pencil"></i></a>';
+
+                                if (row.Ready) {
+                                    result = result + '<a class="clean" id="aClean' + row.PointID + '" href="#" onclick="ConfirmAction(\'@Url.Action("CleanDataPoint", "DataPoint")/' + row.PointID + '\', \'очищение\');"><i class="fa fa-circle-thin"></i></a>';
+                                }
+                                else {
+                                    result = result + '<a class="clean btn disabled" id="aClean' + row.PointID + '"><i class="fa fa-circle-thin"></i></a>';
+                                }
+
+                                if (row.Ready) {
+                                    result = result + '<a class="remove" id="aRemove' + row.PointID + '" href="#" onclick="ConfirmAction(\'@Url.Action("RemoveDataPoint", "DataPoint")/' + row.PointID + '\', \'удаление\');"><i class="fa fa-trash-o"></i></a>';
+                                }
+                                else {
+                                    result = result + '<a class="remove btn disabled" id="aRemove' + row.PointID + '"><i class="fa fa-trash-o"></i></a>';
+                                }
 
                                 return result;
                             }

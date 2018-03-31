@@ -390,6 +390,7 @@
     <Content Include="Content\DataTables\css\common.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\semanticui.scss" />
+    <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\date.format.js" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -521,6 +522,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\DataPoint\EditDataPoint.cshtml" />
     <Content Include="Views\DataPoint\ShowDataPoint.cshtml" />
+    <Content Include="Views\DataPoint\ShowDataPointLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

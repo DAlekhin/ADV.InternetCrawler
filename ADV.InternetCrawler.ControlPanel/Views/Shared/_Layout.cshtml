@@ -40,17 +40,20 @@
                                     <i class="fa fa-home"></i> Главная
                                 </a>
                             </li>
-                            <li>
+                            <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "DataPoint" ? "active open" : "")">
                                 <a href="">
                                     <i class="fa fa-database"></i> Управление точками
                                     <i class="fa arrow"></i>
                                 </a>
                                 <ul class="sidebar-nav">
-                                    <li>
+                                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "EditDataPoint" ? "active" : "")">
                                         @Html.ActionLink("Создать", "EditDataPoint", "DataPoint")
                                     </li>
-                                    <li>
+                                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "ShowDataPoint" ? "active" : "")">
                                         @Html.ActionLink("Список", "ShowDataPoint", "DataPoint")
+                                    </li>
+                                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "ShowDataPointLog" ? "active" : "")">
+                                        @Html.ActionLink("Журнал", "ShowDataPointLog", "DataPoint")
                                     </li>
                                 </ul>
                             </li>

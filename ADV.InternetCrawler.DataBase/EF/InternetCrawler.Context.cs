@@ -15,7 +15,7 @@ namespace ADV.InternetCrawler.DataBase.EF
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     using System.Collections.Generic;
-    
+
     public partial class InternetCrawlerEntities : DbContext
     {
         public InternetCrawlerEntities(string _connectionString)
@@ -34,13 +34,14 @@ namespace ADV.InternetCrawler.DataBase.EF
         public virtual DbSet<Logger> Logger { get; set; }
         public virtual DbSet<LoggerHeader> LoggerHeader { get; set; }
         public virtual DbSet<PointContent> PointContent { get; set; }
-    
+        public virtual DbSet<DataPointOperations> DataPointOperations { get; set; }
+
         public virtual IEnumerable<Proc_GetDataPointStats> Get_DataPointStats()
         {
             //var test2 = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_GetDataPointStats>("InternetCrawlerEntities.Get_DataPointStats");
-            var test = base.Database.SqlQuery<Proc_GetDataPointStats>("Proc_GetDataPointStats");
+            var l_dataSet = base.Database.SqlQuery<Proc_GetDataPointStats>("Proc_GetDataPointStats");
             //var test2 = this.ExecuteFunction<Proc_GetDataPointStats>("InternetCrawlerEntities.Get_DataPointStats");
-            return test;
+            return l_dataSet;
         }
     }
 }

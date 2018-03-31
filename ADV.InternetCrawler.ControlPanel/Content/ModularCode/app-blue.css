@@ -2295,16 +2295,61 @@ a.edit
 {
     padding: 0 7px;
     font-size: 16px;
-    color: #38424C;
+    color: #38424C !important;
 }
 
 a.remove
 {
     padding: 0 7px;
     font-size: 16px;
-    color: #DB0E1E;
+    color: #DB0E1E !important;
 }
 
+a.launch
+{
+    padding: 0 7px;
+    font-size: 16px;
+    color: #00B208 !important;
+}
+
+a.clean
+{
+    padding: 0 7px;
+    font-size: 16px;
+    color: #3A6CFF !important;
+}
+
+
+a.overLink
+{
+    padding: 0 7px;
+    font-size: 16px;
+}
+
+a.copyLink
+{
+    padding: 0 7px;
+    font-size: 16px;
+}
+
+a.launch-disabled
+{
+    padding: 0 7px;
+    font-size: 16px;
+    color: #FF4444 !important;
+}
+
+td.word-break
+{
+    word-break: break-word;
+}
+
+div.hidden
+{
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
 /* *******************************************
 *				Adjustments
 ********************************************** */

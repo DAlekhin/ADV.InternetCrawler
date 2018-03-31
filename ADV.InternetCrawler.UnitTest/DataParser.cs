@@ -12,7 +12,7 @@ namespace ADV.InternetCrawler.UnitTest
         {
             try
             {
-                Int32 l_id = 1;
+                Int32 l_id = 2;
 
                 GetDataFromPoint l_getData = new GetDataFromPoint();
 

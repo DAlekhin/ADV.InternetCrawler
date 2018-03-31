@@ -20,6 +20,8 @@
                     <div class="col-xs-12">
                         @using (Html.BeginForm("EditDataPoint", "DataPoint", FormMethod.Post))
                         {
+                            @Html.ValidationSummary(true, "При сохранении возникли ошибки:", new { @class = "text-danger" })
+                            
                             <div class="card card-block">
                                 <div class="row sameheight-container">
                                     <div class="col-xs-2 vmiddleright">
@@ -67,33 +69,6 @@
                                         <div class="form-group">
                                             <label class="control-label">Окончание выражения</label>
                                             <input name="PageURIFinish" type="text" class="form-control underlined" value="@Model.PageURIFinish">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr />
-                            <div class="card card-block">
-                                <div class="title-block">
-                                    <h3 class="title"> @Html.DisplayNameFor(model => model.ItemURIStart) </h3>
-                                </div>
-                                <div class="row sameheight-container">
-                                    <div class="col-xs-offset-1 col-xs-4">
-                                        <div class="form-group">
-                                            <label class="control-label">Начало выражения</label>
-                                            <input name="ItemURIStart" type="text" class="form-control underlined" value="@Model.ItemURIStart">
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <div class="form-group">
-                                            <label class="control-label">Данные</label>
-                                            <input name="ItemURIData" type="text" class="form-control underlined" value="@Model.ItemURIData">
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <div class="form-group">
-                                            <label class="control-label">Окончание выражения</label>
-                                            <input name="ItemURIFinish" type="text" class="form-control underlined" value="@Model.ItemURIFinish">
                                         </div>
                                     </div>
                                 </div>

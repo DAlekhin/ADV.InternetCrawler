@@ -9,9 +9,13 @@ namespace ADV.InternetCrawler.ControlPanel.Models
         [Display(Name = "#")]
         public Int32? ID { get; set; }
 
+        [Required]
+        [MinLength(5, ErrorMessage = "Длина названия не может быть меньше 5 символов")]
+        [MaxLength(50, ErrorMessage = "Длина названия не может быть больше 50 символов")]
         [Display(Name = "Наименование")]
         public String Name { get; set; }
 
+        [Required]
         [Display(Name = "Стартовая ссылка")]
         public String URI { get; set; }
 

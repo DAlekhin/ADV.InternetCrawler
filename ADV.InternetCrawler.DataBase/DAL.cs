@@ -273,5 +273,142 @@ namespace ADV.InternetCrawler.DataBase
 
             return l_dataPointStats;
         }
+
+        public void StartOperation(Int32 _pointID)
+        {
+            try
+            {
+                using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
+                {
+                    if (l_icEntity.DataPointOperations.Where(w => w.PointID == _pointID && w.EndDateTime == null).Count() > 0)
+                    {
+                        throw new Exception($"Нельзя инициализировать запуск парсинга точки данных {_pointID} пока не закончена прошлая версия.");
+                    }
+
+                    EF.DataPointOperations l_dataPointOperation = new DataPointOperations
+                    {
+                        PointID = _pointID,
+                        StartDateTime = DateTime.UtcNow
+                    };
+
+                    l_icEntity.DataPointOperations.Add(l_dataPointOperation);
+
+                    l_icEntity.SaveChanges();
+                }
+            }
+            catch (Exception l_exc)
+            {
+                throw new Exception(l_exc.Message, l_exc);
+            }
+        }
+
+        public void EndOperation(Int32 _pointID)
+        {
+            Int32 l_operationID = 0;
+
+            try
+            {
+                using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
+                {
+                    l_operationID = l_icEntity.DataPointOperations.Where(w => w.PointID == _pointID && w.EndDateTime == null).Select(s => s.ID).FirstOrDefault();
+
+                    if (l_operationID == 0)
+                    {
+                        throw new Exception($"Произошла ошибка при закрытии операции для точки данных {_pointID}");
+                    }
+
+                    EF.DataPointOperations l_dataPointOperation = l_icEntity.DataPointOperations.Where(w => w.ID == l_operationID).FirstOrDefault();
+
+                    l_dataPointOperation.EndDateTime = DateTime.UtcNow;
+
+                    l_icEntity.SaveChanges();
+                }
+            }
+            catch (Exception l_exc)
+            {
+                throw new Exception(l_exc.Message, l_exc);
+            }
+        }
+
+        public List<DataPointLogModel> GetDataPointLog(Int32 _headerID)
+        {
+            List<DataPointLogModel> l_dataPointLog = new List<DataPointLogModel>();
+
+            try
+            {
+                using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
+                {
+                    if (_headerID != 0)
+                        l_dataPointLog.AddRange(l_icEntity.Logger.Where(w => w.HeaderID == _headerID).Select(s => new DataPointLogModel
+                        {
+                            ID = s.ID,
+                            Module = s.ModuleName,
+                            ProcessDateTime = s.ProccessDateTime,
+                            URI = s.URI,
+                            Level = s.Level,
+                            Message = s.Message
+                        }).OrderByDescending(o => o.ID));
+                    else
+                        l_dataPointLog.AddRange(l_icEntity.Logger.Select(s => new DataPointLogModel
+                        {
+                            ID = s.ID,
+                            Module = s.ModuleName,
+                            ProcessDateTime = s.ProccessDateTime,
+                            URI = s.URI,
+                            Level = s.Level,
+                            Message = s.Message
+                        }).OrderByDescending(o => o.ID));
+                };
+            }
+            catch (Exception l_exc)
+            {
+                throw new Exception(l_exc.Message, l_exc);
+            }
+
+            return l_dataPointLog;
+        }
+
+        public void CleanDataPoint(Int32 _pointID)
+        {
+            try
+            {
+                using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
+                {
+                    l_icEntity.DataPointOperations.RemoveRange(l_icEntity.DataPointOperations.Where(w => w.PointID == _pointID));
+                    l_icEntity.PointContent.RemoveRange(l_icEntity.PointContent.Where(w => w.PointID == _pointID));
+                    
+                    foreach(LoggerHeader l_loggerHeader in l_icEntity.LoggerHeader.Where(w => w.PointID == _pointID).ToList())
+                    {
+                        l_icEntity.Logger.RemoveRange(l_icEntity.Logger.Where(w => w.HeaderID == l_loggerHeader.ID));
+                        l_icEntity.LoggerHeader.Remove(l_loggerHeader);
+                    }
+
+                    l_icEntity.SaveChanges();
+                }
+            }
+            catch (Exception l_exc)
+            {
+                throw new Exception(l_exc.Message, l_exc);
+            }
+        }
+
+        public void RemoveDataPoint(Int32 _pointID)
+        {
+            try
+            {
+                CleanDataPoint(_pointID);
+
+                using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
+                {
+                    l_icEntity.DataPoint.RemoveRange(l_icEntity.DataPoint.Where(w => w.ID == _pointID));
+
+                    l_icEntity.SaveChanges();
+                }
+            }
+            catch (Exception l_exc)
+            {
+                throw new Exception(l_exc.Message, l_exc);
+            }
+        }
     }
 }

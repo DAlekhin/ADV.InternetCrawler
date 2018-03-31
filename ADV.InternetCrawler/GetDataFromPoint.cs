@@ -76,6 +76,7 @@ namespace ADV.InternetCrawler
             try
             {
                 l_dataPoint = GetDataPoint(_id);
+                SetOperationToDataBase(l_dataPoint.ID, 0);
 
                 AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Trace, $"Инициализация получения контента из точки {_id}");
 
@@ -91,6 +92,23 @@ namespace ADV.InternetCrawler
             catch (Exception l_exc)
             {
                 AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при получении контента из точки {_id}: {l_exc.Message}", l_exc);
+            }
+        }
+
+        public async void PullDataFromPointAsync(Int32 _id)
+        {
+            try
+            {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Trace, $"Инициализация асинхронного получения контента из точки {_id}");
+
+                await Task.Run(() =>
+                {
+                    PullDataFromPoint(_id);
+                });
+            }
+            catch (Exception l_exc)
+            {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при асинхронном получении контента из точки {_id}: {l_exc.Message}", l_exc);
             }
         }
 
@@ -124,6 +142,7 @@ namespace ADV.InternetCrawler
             {
                 var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
                 l_containerObject.SavePointContent(_pointContents);
+                l_containerObject.EndOperation(this.PointID);
 
                 AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Контент успешно сохранен.");
             }
@@ -160,6 +179,54 @@ namespace ADV.InternetCrawler
             }
 
             return l_dataPointStats;
+        }
+
+        private void SetOperationToDataBase(Int32 _pointID, Int32 _type)
+        {
+            try
+            {
+                var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
+                switch(_type)
+                {
+                    case 0:
+                        l_containerObject.StartOperation(_pointID);
+                        break;
+                    case 1:
+                        l_containerObject.EndOperation(_pointID);
+                        break;
+                    default:
+                        AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Error, $"Неизвестный тип операции");
+                        break;
+                }
+            }
+            catch (Exception l_exc)
+            {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при установке операции с точкой данных {_pointID}: {l_exc.Message}", l_exc);
+            }
+        }
+
+        public List<DataPointLogModel> GetDataPointLog(Int32 HeaderID)
+        {
+
+            List<DataPointLogModel> l_dataPointLog = new List<DataPointLogModel>();
+            try
+            {
+                var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
+                l_dataPointLog = l_containerObject.GetDataPointLog(HeaderID);
+
+                //AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Журнал успешно получен");
+            }
+            catch (Exception l_exc)
+            {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при получении журанала: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
+                ICException.GetException(this.Messages);
+            }
+
+            return l_dataPointLog;
         }
     }
 }

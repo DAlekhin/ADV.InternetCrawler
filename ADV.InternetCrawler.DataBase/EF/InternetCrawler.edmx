@@ -20,6 +20,15 @@
           <Property Name="ItemArticle" Type="nvarchar(max)" />
           <Property Name="ItemPictureURI" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="DataPointOperations">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PointID" Type="int" Nullable="false" />
+          <Property Name="StartDateTime" Type="datetime" />
+          <Property Name="EndDateTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="Logger">
           <Key>
             <PropertyRef Name="ID" />
@@ -60,6 +69,7 @@
         <Function Name="Proc_GetDataPointStats" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="Хранилище InternetCrawlerModelContainer">
           <EntitySet Name="DataPoint" EntityType="Self.DataPoint" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DataPointOperations" EntityType="Self.DataPointOperations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Logger" EntityType="Self.Logger" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoggerHeader" EntityType="Self.LoggerHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PointContent" EntityType="Self.PointContent" Schema="dbo" store:Type="Tables" />
@@ -126,6 +136,7 @@
           <EntitySet Name="LoggerHeader" EntityType="Self.LoggerHeader" />
           <EntitySet Name="PointContent" EntityType="Self.PointContent" />
           <FunctionImport Name="Get_DataPointStats" ReturnType="Collection(InternetCrawlerModel.Proc_GetDataPointStats)" />
+          <EntitySet Name="DataPointOperations" EntityType="InternetCrawlerModel.DataPointOperations" />
         </EntityContainer>
         <ComplexType Name="Proc_GetDataPointStats" >
           <Property Type="Int32" Name="PointID" Nullable="false" />
@@ -134,7 +145,17 @@
           <Property Type="Int32" Name="Rounds" Nullable="false" />
           <Property Type="DateTime" Name="LastRound" Nullable="false" />
           <Property Type="Boolean" Name="Error" Nullable="false" />
+          <Property Type="Boolean" Name="Ready" Nullable="false" />
         </ComplexType>
+        <EntityType Name="DataPointOperations">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PointID" Type="Int32" Nullable="false" />
+          <Property Name="StartDateTime" Type="DateTime" Precision="3" />
+          <Property Name="EndDateTime" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -208,6 +229,16 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="DataPointOperations">
+            <EntityTypeMapping TypeName="InternetCrawlerModel.DataPointOperations">
+              <MappingFragment StoreEntitySet="DataPointOperations">
+                <ScalarProperty Name="EndDateTime" ColumnName="EndDateTime" />
+                <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
+                <ScalarProperty Name="PointID" ColumnName="PointID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

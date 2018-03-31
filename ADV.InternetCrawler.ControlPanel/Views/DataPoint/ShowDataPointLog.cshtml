@@ -1,0 +1,163 @@
+﻿@using ADV.InternetCrawler.Models
+@model DataPointLogModel
+
+<article class="content items-list-page">
+    <div class="title-search-block">
+        <div class="title-block">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="title">
+                        @ViewBag.Title
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card items">
+        <div class="card-block">
+            <section class="table">
+                <table id="dataPointLog" class="table dt-responsive row-border hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.ProcessDateTime)</th>
+                            <th>@Html.DisplayNameFor(m => m.Module)</th>
+                            <th>@Html.DisplayNameFor(m => m.Level)</th>
+                            <th>@Html.DisplayNameFor(m => m.URI)</th>
+                            <th>@Html.DisplayNameFor(m => m.Message)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </section>
+        </div>
+    </div>
+</article>
+
+<script type="text/javascript">
+    function copyToClipboard(ObjectID) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($('#'+ObjectID).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+    
+    $(document).ready(function () {
+        $('#dataPointLog').DataTable({
+            "iDisplayLength": 100,
+            "responsive": false,
+            "ajax": {
+                "url": "@Html.Raw(Url.Action("ShowDataPointLog", "DataPoint", new { HeaderID = @Request.Params["HeaderID"] ?? "0" }))",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                {
+                    "data": "ProcessDateTime",
+                    "orderable": true,
+                    "searchable": false,
+                    "render": function (data, type, row, meta) {
+                        var result = new Date(parseInt(row.ProcessDateTime.replace('/Date(', '')));
+                        return result.format('dd.m.yyyy HH:MM');
+                    }
+                },
+                {
+                    "data": "Module",
+                    "orderable": false,
+                    "searchable": true
+                },
+                {
+                    "data": "Level",
+                    "orderable": false,
+                    "searchable": true,
+                    "render": function (data, type, row, meta) {
+                        var result = '';
+
+                        if (row.Level == "6") {
+                            result = "<span class=\"badge badge-danger\">Критическая ошибка</span>";
+                        }
+                        else if (row.Level == "5") {
+                            result = "<span class=\"badge badge-danger\">Ошибка</span>";
+                        }
+                        else if (row.Level == "4") {
+                            result = "<span class=\"badge badge-warning\">Предупреждение</span>";
+                        }
+                        else if (row.Level == "3") {
+                            result = "<span class=\"badge badge-info\">Информация</span>";
+                        }
+                        else if (row.Level == "2") {
+                            result = "<span class=\"badge badge-secondary\">Отладка</span>";
+                        }
+                        else {
+                            result = "<span class=\"badge badge-light\">Трейс</span>";
+                        }
+
+                        return result;
+                    }
+                },
+                {
+                    "data": "URI",
+                    "orderable": false,
+                    "searchable": true,
+                    "render": function (data, type, row, meta) {
+                        var result = '';
+    
+                        if (row.URI != undefined) {
+                            result = '<a class="overLink" href="' + row.URI + '" target="_blank"><i class="fa fa-link"></i></a>'
+                            result = result + '<div class="hidden" id="linkID' + row.ID + '">' + row.URI + '</div>'
+                            result = result + '<a class="copyLink" href="javascript: copyToClipboard(\'linkID' + row.ID + '\')"><i class="fa fa-copy"></i></a>'
+                        }
+    
+                        return result;
+                    }
+                },
+                {
+                    "data": "Message",
+                    "orderable": false,
+                    "searchable": true,
+                    "className": "word-break"
+                },
+                {
+                    "data": "ID",
+                    "orderable": true,
+                    "searchable": false,
+                    "visible": false
+                }
+            ],
+            "createdRow": function (row, data, dataIndex) {
+                if (data["Level"] == "6") {
+                    $(row).addClass('danger');
+                }
+                else if (data["Level"] == "5") {
+                    $(row).addClass('danger');
+                }
+                else if (data["Level"] == "4") {
+                    $(row).addClass('warning');
+                }
+            },
+            "order": [[5, "desc"]],
+            "language": {
+                "processing": "Подождите...",
+                "search": "Поиск:",
+                "lengthMenu": "Показать _MENU_ записей",
+                "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                "infoPostFix": "",
+                "loadingRecords": "Загрузка записей...",
+                "zeroRecords": "Записи отсутствуют.",
+                "emptyTable": "В таблице отсутствуют данные",
+                "paginate": {
+                    "first": "Первая",
+                    "previous": "Предыдущая",
+                    "next": "Следующая",
+                    "last": "Последняя"
+                },
+                "aria": {
+                    "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                    "sortDescending": ": активировать для сортировки столбца по убыванию"
+                }
+            }
+        });
+    });
+</script>

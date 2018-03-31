@@ -111,13 +111,19 @@ namespace ADV.InternetCrawler.Core.Test
 
         private void SaveItemContent()
         {
+            String l_itemName = "";
+            String l_itemArticle = "";
+            Double l_itemPrice = 0;
+            Double l_itemDiscountPrice = 0;
+            String l_itemPictureUri = "";
+
             try
             {
                 foreach (String l_uri in uriItems.Distinct())
                 {
                     try
                     {
-                        AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, l_uri, MessageType.Info, $"Инициализация парсинга товара {l_uri}");
+                        AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, l_uri, MessageType.Info, $"Инициализация парсинга товара.");
 
                         System.Threading.Thread.Sleep((int)TimeSpan.FromSeconds(timePause).TotalMilliseconds);
 
@@ -138,15 +144,48 @@ namespace ADV.InternetCrawler.Core.Test
                         Regex l_regexItemPicture = new Regex(dataPoint.ItemPictureUri ?? "");
                         Match l_matchItemPicture = l_regexItemPicture.Match(l_contentBody);
 
+                        if (l_matchItemName.Success)
+                        {
+                            l_itemName = l_matchItemName.Groups["Data"].Value;
+                        }
+
+                        if (l_matchItemArticle.Success)
+                        {
+                            l_itemArticle = l_matchItemArticle.Groups["Data"].Value;
+                        }
+
+                        if (l_matchItemPrice.Success)
+                        {
+                            try
+                            {
+                                l_itemPrice = Double.Parse(l_matchItemPrice.Groups["Data"].Value);
+                            }
+                            catch { }
+                        }
+
+                        if (l_matchItemDiscountPrice.Success)
+                        {
+                            try
+                            {
+                                l_itemDiscountPrice = Double.Parse(l_matchItemDiscountPrice.Groups["Data"].Value);
+                            }
+                            catch { }
+                        }
+
+                        if (l_matchItemPicture.Success)
+                        {
+                            l_itemPictureUri = GetFullUri(l_matchItemPicture.Groups["Data"].Value, dataPoint.Uri);
+                        }
+
                         pointContents.Add(new PointContent
                         {
                             PointID = dataPoint.ID,
-                            ItemName = l_matchItemName.Success ? l_matchItemName.Groups["Data"].Value : "",
-                            ItemArticle = l_matchItemArticle.Success ? l_matchItemArticle.Groups["Data"].Value : "",
-                            ItemPrice = l_matchItemPrice.Success ? Double.Parse(l_matchItemPrice.Groups["Data"].Value) : 0,
-                            ItemDiscountPrice = l_matchItemDiscountPrice.Success ? Double.Parse(l_matchItemDiscountPrice.Groups["Data"].Value) : 0,
+                            ItemName = l_itemName,
+                            ItemArticle = l_itemArticle,
+                            ItemPrice = l_itemPrice,
+                            ItemDiscountPrice = l_itemDiscountPrice,
                             ItemUri = l_uri,
-                            ItemPictureUri = l_matchItemPicture.Success ? GetFullUri(l_matchItemPicture.Groups["Data"].Value, dataPoint.Uri) : ""
+                            ItemPictureUri = l_itemPictureUri
                         });
 
                         AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, l_uri, MessageType.Info, $"Товар {l_matchItemName.Groups["Data"].Value} успешно сохранен.");

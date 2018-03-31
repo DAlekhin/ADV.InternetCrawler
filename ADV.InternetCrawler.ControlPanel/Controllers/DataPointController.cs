@@ -7,13 +7,14 @@ using ADV.InternetCrawler.ControlPanel.Models;
 using ADV.InternetCrawler.Models;
 using System.Web.Script.Serialization;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ADV.InternetCrawler.ControlPanel.Controllers
 {
     public class DataPointController : Controller
     {
         [HttpGet]
-        public ActionResult EditDataPoint(int? ID)
+        public ActionResult EditDataPoint(Int32? ID)
         {
             DataPointEditModel l_model = null;
 
@@ -22,7 +23,7 @@ namespace ADV.InternetCrawler.ControlPanel.Controllers
                 if (ID != null)
                 {
                     DataPoint l_dataPoint = null;
-                    int l_id = ID.GetValueOrDefault();
+                    Int32 l_id = ID.GetValueOrDefault();
 
                     GetDataFromPoint l_detDataPoint = new GetDataFromPoint();
 
@@ -50,9 +51,9 @@ namespace ADV.InternetCrawler.ControlPanel.Controllers
                         ItemPriceData = SeparateRegex(l_dataPoint.ItemPrice, "Data"),
                         ItemPriceFinish = SeparateRegex(l_dataPoint.ItemPrice, "Finish"),
 
-                        ItemDiscountPriceStart = SeparateRegex(l_dataPoint.ItemPictureUri, "Start"),
-                        ItemDiscountPriceData = SeparateRegex(l_dataPoint.ItemPictureUri, "Data"),
-                        ItemDiscountPriceFinish = SeparateRegex(l_dataPoint.ItemPictureUri, "Finish"),
+                        ItemDiscountPriceStart = SeparateRegex(l_dataPoint.ItemDiscountPrice, "Start"),
+                        ItemDiscountPriceData = SeparateRegex(l_dataPoint.ItemDiscountPrice, "Data"),
+                        ItemDiscountPriceFinish = SeparateRegex(l_dataPoint.ItemDiscountPrice, "Finish"),
 
                         ItemArticleStart = SeparateRegex(l_dataPoint.ItemArticle, "Start"),
                         ItemArticleData = SeparateRegex(l_dataPoint.ItemArticle, "Data"),
@@ -76,34 +77,94 @@ namespace ADV.InternetCrawler.ControlPanel.Controllers
             return View(l_model);
         }
 
+        [HttpGet]
+        public ActionResult ShowDataPointLog(Int32? HeaderID)
+        {
+            DataPointLogModel l_model = new DataPointLogModel();
+
+            ViewBag.Title = "Журнал обработки";
+
+            return View(l_model);
+        }
+
         [HttpPost]
-        public JsonResult EditDataPoint(DataPointEditModel Model)
+        public JsonResult ShowDataPointLog(Int32 HeaderID)
+        {
+            List<DataPointLogModel> l_dataPointStats = new List<DataPointLogModel>();
+
+            try
+            {
+                GetDataFromPoint l_dataPoint = new GetDataFromPoint();
+
+                l_dataPointStats = l_dataPoint.GetDataPointLog(HeaderID);
+            }
+            catch { }
+
+            return new LargeJsonResult() { Data = l_dataPointStats };
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult EditDataPoint(DataPointEditModel Model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    DataPoint l_dataPoint = new DataPoint
+                    {
+                        ID = Model.ID ?? 0,
+                        Name = Model.Name,
+                        Uri = Model.URI,
+
+                        PageUri = $"{Model.PageURIStart}(?<Data>{Model.PageURIData}){Model.PageURIFinish}",
+                        ItemUri = $"{Model.ItemURIStart}(?<Data>{Model.ItemURIData}){Model.ItemURIFinish}",
+                        ItemName = $"{Model.ItemNameStart}(?<Data>{Model.ItemNameData}){Model.ItemNameFinish}",
+                        ItemPrice = $"{Model.ItemPriceStart}(?<Data>{Model.ItemPriceData}){Model.ItemPriceFinish}",
+                        ItemDiscountPrice = $"{Model.ItemDiscountPriceStart}(?<Data>{Model.ItemDiscountPriceData}){Model.ItemDiscountPriceFinish}",
+                        ItemArticle = $"{Model.ItemArticleStart}(?<Data>{Model.ItemArticleData}){Model.ItemArticleFinish}",
+                        ItemPictureUri = $"{Model.ItemPictureUriStart}(?<Data>{Model.ItemPictureUriData}){Model.ItemPictureUriFinish}"
+                    };
+
+                    l_dataPoint.Save();
+
+                    return RedirectToAction("ShowDataPoint", "DataPoint");
+                }
+                catch (Exception l_exc)
+                {
+                    ModelState.AddModelError("", l_exc.Message);
+                }
+            }
+
+            return View(Model);
+        }
+
+        public ActionResult CleanDataPoint(Int32 ID)
         {
             try
             {
-                DataPoint l_dataPoint = new DataPoint
-                {
-                    ID = Model.ID ?? 0,
-                    Name = Model.Name,
-                    Uri = Model.URI,
+                DataPoint l_dataPoint = new DataPoint();
+                l_dataPoint.ID = ID;
 
-                    PageUri = Model.PageURIStart + Model.PageURIData + Model.PageURIFinish,
-                    ItemUri = Model.ItemURIStart + Model.ItemURIData + Model.ItemURIFinish,
-                    ItemName = Model.ItemNameStart + Model.ItemNameData + Model.ItemNameFinish,
-                    ItemPrice = Model.ItemPriceStart + Model.ItemPriceData + Model.ItemPriceFinish,
-                    ItemDiscountPrice = Model.ItemDiscountPriceStart + Model.ItemDiscountPriceData + Model.ItemDiscountPriceFinish,
-                    ItemArticle = Model.ItemArticleStart + Model.ItemArticleData + Model.ItemArticleFinish,
-                    ItemPictureUri = Model.ItemDiscountPriceStart + Model.ItemDiscountPriceData + Model.ItemDiscountPriceFinish
-                };
-
-                l_dataPoint.Save();
+                l_dataPoint.Clean();
             }
-            catch (Exception l_exc)
+            catch { }
+
+            return RedirectToAction("ShowDataPoint");
+        }
+
+        public ActionResult RemoveDataPoint(Int32 ID)
+        {
+            try
             {
-                return Json(new { Status = false, Error = l_exc.Message });
-            }
+                DataPoint l_dataPoint = new DataPoint();
+                l_dataPoint.ID = ID;
 
-            return Json(new { Status = true });
+                l_dataPoint.Remove();
+            }
+            catch { }
+
+            return RedirectToAction("ShowDataPoint");
         }
 
         public ActionResult ShowDataPoint()
@@ -131,6 +192,26 @@ namespace ADV.InternetCrawler.ControlPanel.Controllers
             }
 
             return new LargeJsonResult() { Data = l_dataPointStats };
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LaunchDataPoint(Int32 PointID)
+        {
+            try
+            {
+                GetDataFromPoint l_pullData = new GetDataFromPoint();
+
+                //l_pullData.PullDataFromPoint(PointID);
+                //l_pullData.PullDataFromPointAsync(PointID);
+
+                await Task.Run(() =>
+                {
+                    l_pullData.PullDataFromPoint(PointID);
+                });
+            }
+            catch (Exception l_exc) { }
+
+            return Json(new { Status = true });
         }
 
         private String SeparateRegex(String _regex, String _partName)
