@@ -35,6 +35,7 @@ namespace ADV.InternetCrawler.DataBase.EF
         public virtual DbSet<LoggerHeader> LoggerHeader { get; set; }
         public virtual DbSet<PointContent> PointContent { get; set; }
         public virtual DbSet<DataPointOperations> DataPointOperations { get; set; }
+        public virtual DbSet<DataPointScheduler> DataPointScheduler { get; set; }
 
         public virtual IEnumerable<Proc_GetDataPointStats> Get_DataPointStats()
         {

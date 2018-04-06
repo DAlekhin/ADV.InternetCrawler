@@ -20,6 +20,8 @@ namespace ADV.InternetCrawler.Interface
 
         void RemoveDataPoint(Int32 PointID);
 
+        void SetDataPointSchedule(DataPointScheduleModel DataPointSchedule); 
+
         DataPoint GetDataPoint(Int32 ID);
 
         List<DataPoint> GetDataPoints();
@@ -27,5 +29,7 @@ namespace ADV.InternetCrawler.Interface
         List<DataPointStatsModel> GetDataPointStats();
 
         List<DataPointLogModel> GetDataPointLog(Int32 HeaderID);
+
+        DataPointScheduleModel GetDataPointSchedule(Int32 PointID);
     }
 }

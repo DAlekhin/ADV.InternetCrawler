@@ -176,6 +176,36 @@ namespace ADV.InternetCrawler.ControlPanel.Controllers
             return View(l_dataPointStats);
         }
 
+        public PartialViewResult _DataPointSchedule(Int32 ID)
+        {
+            DataPointScheduleModel l_scheduleModel = new DataPointScheduleModel();
+
+            try
+            {
+                GetDataFromPoint l_dataPointSchedule = new GetDataFromPoint();
+                l_scheduleModel = l_dataPointSchedule.GetDataPointSchedule(ID);
+            }
+            catch { }
+
+            return PartialView("_DataPointSchedule", l_scheduleModel);
+        }
+
+        [HttpPost]
+        public ActionResult SetDataPointSchedule(DataPointScheduleModel Model)
+        {
+            try
+            {
+                DataPoint l_dataPoint = new DataPoint();
+                l_dataPoint.ID = Model.PointID;
+
+                l_dataPoint.SetSchedule(Model);
+
+            }
+            catch { }
+
+            return RedirectToAction("ShowDataPoint");
+        }
+
         [HttpPost]
         public JsonResult GetDataPointStats()
         {

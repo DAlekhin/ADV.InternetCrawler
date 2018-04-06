@@ -523,6 +523,7 @@
     <Content Include="Views\DataPoint\EditDataPoint.cshtml" />
     <Content Include="Views\DataPoint\ShowDataPoint.cshtml" />
     <Content Include="Views\DataPoint\ShowDataPointLog.cshtml" />
+    <Content Include="Views\DataPoint\_DataPointSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

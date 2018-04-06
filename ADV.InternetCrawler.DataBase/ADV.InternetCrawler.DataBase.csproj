@@ -56,6 +56,9 @@
     <Compile Include="EF\DataPointOperations.cs">
       <DependentUpon>InternetCrawler.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\DataPointScheduler.cs">
+      <DependentUpon>InternetCrawler.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\InternetCrawler.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

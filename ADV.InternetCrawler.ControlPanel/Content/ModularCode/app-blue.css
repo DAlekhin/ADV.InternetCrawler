@@ -2316,9 +2316,15 @@ a.clean
 {
     padding: 0 7px;
     font-size: 16px;
-    color: #3A6CFF !important;
+    color: #DD6E00 !important;
 }
 
+a.schedule
+{
+    padding: 0 7px;
+    font-size: 16px;
+    color: #0037BE !important;
+}
 
 a.overLink
 {

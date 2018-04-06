@@ -5,6 +5,7 @@ using ADV.InternetCrawler.Utility;
 using ADV.InternetCrawler.Utility.Logger;
 using ADV.InternetCrawler.Interface;
 using System.Reflection;
+using ADV.InternetCrawler.Models;
 
 namespace ADV.InternetCrawler
 {
@@ -205,6 +206,37 @@ namespace ADV.InternetCrawler
             catch (Exception l_exc)
             {
                 AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при удалении точки данных: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
+                ICException.GetException(this.Messages);
+            }
+        }
+
+        public void SetSchedule(DataPointScheduleModel _dataPointSchedule)
+        {
+            Int32 l_calcInterval = 0;
+
+            try
+            {
+                if (_dataPointSchedule.IntervalType == 0)
+                    l_calcInterval = _dataPointSchedule.Interval;
+                else if (_dataPointSchedule.IntervalType == 1)
+                    l_calcInterval = _dataPointSchedule.Interval * 60;
+                else if (_dataPointSchedule.IntervalType == 2)
+                    l_calcInterval = _dataPointSchedule.Interval * 1440;                 
+
+                _dataPointSchedule.Interval = l_calcInterval;
+
+                var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
+                l_containerObject.SetDataPointSchedule(_dataPointSchedule);
+
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Расписание для точки данных {id} сохранено.");
+            }
+            catch (Exception l_exc)
+            {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при сохранении расписания для точки данных {id}: {l_exc.Message}", l_exc);
             }
             finally
             {

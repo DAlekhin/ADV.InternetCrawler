@@ -52,4 +52,40 @@ namespace ADV.InternetCrawler.Models
         [Display(Name = "Сообщение")]
         public String Message { get; set; }
     }
+
+    public class DataPointScheduleModel
+    {
+        [Display(Name = "PointID")]
+        public Int32 PointID { get; set; }
+
+        [Display(Name = "Включено")]
+        public Boolean Enabled { get; set; }
+
+        [Display(Name = "Понедельник")]
+        public Boolean Monday { get; set; }
+
+        [Display(Name = "Вторник")]
+        public Boolean Tuesday { get; set; }
+
+        [Display(Name = "Среда")]
+        public Boolean Wednesday { get; set; }
+
+        [Display(Name = "Четверг")]
+        public Boolean Thursday { get; set; }
+
+        [Display(Name = "Пятница")]
+        public Boolean Friday { get; set; }
+
+        [Display(Name = "Суббота")]
+        public Boolean Saturday { get; set; }
+
+        [Display(Name = "Воскресение")]
+        public Boolean Sunday { get; set; }
+
+        [Display(Name = "Тип Периода")]
+        public Int32 IntervalType { get; set; }
+
+        [Display(Name = "Период")]
+        public Int32 Interval { get; set; }
+    }
 }

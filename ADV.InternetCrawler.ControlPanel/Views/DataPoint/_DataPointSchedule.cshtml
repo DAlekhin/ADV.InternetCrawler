@@ -1,0 +1,80 @@
+﻿@model ADV.InternetCrawler.Models.DataPointScheduleModel
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ScheduleModal" id="DataPointScheduleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fa fa-calendar"></i> Расписание Запуска
+                </h4>
+            </div>
+            @using (Html.BeginForm("SetDataPointSchedule", "DataPoint", FormMethod.Post))
+            {
+            <div class="modal-body">
+                @Html.ValidationSummary(true, "При сохранении возникли ошибки:", new { @class = "text-danger" })
+                <input type="hidden" name="PointID" value="@Model.PointID" />
+                <div class="form-group">
+                    <label>
+                        @*<input class="checkbox" name="Enabled" type="checkbox" checked="@Model.Enabled">*@
+                        @*@Html.CheckBoxFor(model => model.Enabled, new { @class = "checkbox" })*@
+                        <input type="checkbox" class="checkbox" name="Enabled" value="true" id="Enabled" @Html.Raw((Model.Enabled) ? "checked=\"checked\"" : "")/>
+                        <span>@Html.DisplayNameFor(model => model.Enabled)</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Дни недели</label>
+                    <div>
+                        <label>
+                            <input class="checkbox" name="Monday" type="checkbox" value="true" id="Monday" @Html.Raw((Model.Monday) ? "checked=\"checked\"" : "")>
+                            <span>@Html.DisplayNameFor(model => model.Monday)</span>
+                        </label>
+                        <label>
+                            <input class="checkbox" name="Tuesday" type="checkbox" value="true" id="Tuesday" @Html.Raw((Model.Tuesday) ? "checked=\"checked\"" : "")>
+                            <span>@Html.DisplayNameFor(model => model.Tuesday)</span>
+                        </label>
+                        <label>
+                            <input class="checkbox" name="Wednesday" type="checkbox" value="true" id="Wednesday" @Html.Raw((Model.Wednesday) ? "checked=\"checked\"" : "")>
+                            <span>@Html.DisplayNameFor(model => model.Wednesday)</span>
+                        </label>
+                        <label>
+                            <input class="checkbox" name="Thursday" type="checkbox" value="true" id="Thursday" @Html.Raw((Model.Thursday) ? "checked=\"checked\"" : "")>
+                            <span>@Html.DisplayNameFor(model => model.Thursday)</span>
+                        </label>
+                        <label>
+                            <input class="checkbox" name="Friday" type="checkbox" value="true" id="Friday" @Html.Raw((Model.Friday) ? "checked=\"checked\"" : "")>
+                            <span>@Html.DisplayNameFor(model => model.Friday)</span>
+                        </label>
+                        <label>
+                            <input class="checkbox" name="Saturday" type="checkbox" value="true" id="Saturday" @Html.Raw((Model.Saturday) ? "checked=\"checked\"" : "")>
+                            <span>@Html.DisplayNameFor(model => model.Saturday)</span>
+                        </label>
+                        <label>
+                            <input class="checkbox" name="Sunday" type="checkbox" value="true" id="Sunday" @Html.Raw((Model.Sunday) ? "checked=\"checked\"" : "")>
+                            <span>@Html.DisplayNameFor(model => model.Sunday)</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="control-label">@Html.DisplayNameFor(model => model.Interval)</label>
+                        <input type="text" name="Interval" class="form-control underlined text-center" value="@Model.Interval">
+                        <select class="form-control" name="IntervalType">
+                            <option value="0" @(Model.IntervalType == 0 ? "selected" : "")>Минут</option>
+                            <option value="1" @(Model.IntervalType == 1 ? "selected" : "")>Часов</option>
+                            <option value="2" @(Model.IntervalType == 2 ? "selected" : "")>Дней</option>
+                        </select>
+                    </div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="Сохранить">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+                }
+            </div>
+    </div>
+</div>
+
+<script>
+    $('#DataPointScheduleModal').modal();
+</script>

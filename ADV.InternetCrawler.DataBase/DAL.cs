@@ -410,5 +410,122 @@ namespace ADV.InternetCrawler.DataBase
                 throw new Exception(l_exc.Message, l_exc);
             }
         }
+
+        public DataPointScheduleModel GetDataPointSchedule(Int32 _pointID)
+        {
+            DataPointScheduleModel l_dataPointSchedule = new DataPointScheduleModel();
+
+            try
+            {
+                using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
+                {
+                    EF.DataPointScheduler l_efDataPointSchedule = l_icEntity.DataPointScheduler.Where(w => w.PointID == _pointID).FirstOrDefault();
+
+                    if (l_efDataPointSchedule == null)
+                    {
+                        l_dataPointSchedule.PointID = _pointID;
+                        l_dataPointSchedule.Enabled = false;
+                        l_dataPointSchedule.Monday = false;
+                        l_dataPointSchedule.Tuesday = false;
+                        l_dataPointSchedule.Wednesday = false;
+                        l_dataPointSchedule.Thursday = false;
+                        l_dataPointSchedule.Friday = false;
+                        l_dataPointSchedule.Saturday = false;
+                        l_dataPointSchedule.Sunday = false;
+
+                        l_dataPointSchedule.Interval = 0;
+                        l_dataPointSchedule.IntervalType = 0;
+                    }
+                    else
+                    {
+                        l_dataPointSchedule.PointID = l_efDataPointSchedule.PointID;
+                        l_dataPointSchedule.Enabled = l_efDataPointSchedule.Enabled;
+                        l_dataPointSchedule.Monday = l_efDataPointSchedule.Monday;
+                        l_dataPointSchedule.Tuesday = l_efDataPointSchedule.Tuesday;
+                        l_dataPointSchedule.Wednesday = l_efDataPointSchedule.Wednesday;
+                        l_dataPointSchedule.Thursday = l_efDataPointSchedule.Thursday;
+                        l_dataPointSchedule.Friday = l_efDataPointSchedule.Friday;
+                        l_dataPointSchedule.Saturday = l_efDataPointSchedule.Saturday;
+                        l_dataPointSchedule.Sunday = l_efDataPointSchedule.Sunday;
+
+                        if (l_efDataPointSchedule.Interval < 60)
+                        {
+                            l_dataPointSchedule.Interval = l_efDataPointSchedule.Interval;
+                            l_dataPointSchedule.IntervalType = 0; //Минут
+                        }
+                        else if (l_efDataPointSchedule.Interval < 1440)
+                        {
+                            l_dataPointSchedule.Interval = l_efDataPointSchedule.Interval / 60;
+                            l_dataPointSchedule.IntervalType = 1; //Часов
+                        }
+                        else if (l_efDataPointSchedule.Interval > 1440)
+                        {
+                            l_dataPointSchedule.Interval = l_efDataPointSchedule.Interval / 1440;
+                            l_dataPointSchedule.IntervalType = 2; //Дней
+                        }
+
+                    }
+                }
+            }
+            catch (Exception l_exc)
+            {
+                throw new Exception(l_exc.Message, l_exc);
+            }
+
+            return l_dataPointSchedule;
+        }
+
+        public void SetDataPointSchedule(DataPointScheduleModel _dataPointSchedule)
+        {
+            try
+            {
+                using (InternetCrawlerEntities l_icEntity = new InternetCrawlerEntities(this.connectionString))
+                {
+                    int l_ID = 0;
+
+                    l_ID = l_icEntity.DataPointScheduler.Where(w => w.PointID == _dataPointSchedule.PointID).Select(s => s.ID).FirstOrDefault();
+
+                    if (l_ID == 0)
+                    {
+                        l_icEntity.DataPointScheduler.Add(new DataPointScheduler
+                        {
+                            PointID = _dataPointSchedule.PointID,
+                            Enabled = _dataPointSchedule.Enabled,
+                            Monday = _dataPointSchedule.Monday,
+                            Tuesday = _dataPointSchedule.Tuesday,
+                            Wednesday = _dataPointSchedule.Wednesday,
+                            Thursday = _dataPointSchedule.Thursday,
+                            Friday = _dataPointSchedule.Friday,
+                            Saturday = _dataPointSchedule.Saturday,
+                            Sunday = _dataPointSchedule.Sunday,
+                            Interval = _dataPointSchedule.Interval
+                        });
+
+                        l_icEntity.SaveChanges();
+                    }
+                    else
+                    {
+                        EF.DataPointScheduler l_dataPointSchedule = l_icEntity.DataPointScheduler.Where(w => w.ID == l_ID).FirstOrDefault();
+
+                        l_dataPointSchedule.Enabled = _dataPointSchedule.Enabled;
+                        l_dataPointSchedule.Monday = _dataPointSchedule.Monday;
+                        l_dataPointSchedule.Tuesday = _dataPointSchedule.Tuesday;
+                        l_dataPointSchedule.Wednesday = _dataPointSchedule.Wednesday;
+                        l_dataPointSchedule.Thursday = _dataPointSchedule.Thursday;
+                        l_dataPointSchedule.Friday = _dataPointSchedule.Friday;
+                        l_dataPointSchedule.Saturday = _dataPointSchedule.Saturday;
+                        l_dataPointSchedule.Sunday = _dataPointSchedule.Sunday;
+                        l_dataPointSchedule.Interval = _dataPointSchedule.Interval;
+
+                        l_icEntity.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception l_exc)
+            {
+                throw new Exception(l_exc.Message, l_exc);
+            }
+        }
+
     }
 }

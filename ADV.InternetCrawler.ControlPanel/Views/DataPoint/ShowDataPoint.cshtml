@@ -35,6 +35,8 @@
         </div>
 </article>
 
+<div id="SetSchedule"></div>
+
 <script type="text/javascript">
     function LaunchDataPoint(PointID) {
         $.ajax({
@@ -56,6 +58,21 @@
         if (confirm('Подтвердите ' + Name)) {
             window.location = URL;
         }
+    }
+
+    function SetSchedule(PointID) {
+        $.ajax({
+            url: "@(Url.Action("_DataPointSchedule", "DataPoint"))",
+            data: {
+                ID: PointID
+            },
+            type: "POST",
+            cache: false,
+            async: false,
+            success: function (data) {
+                $('#SetSchedule').html(data);
+            }
+        });
     }
 
             $(document).ready(function () {
@@ -105,7 +122,13 @@
                             "searchable": true,
                             "render": function (data, type, row, meta) {
                                 var result = new Date(parseInt(row.NextRound.replace('/Date(', '')));
-                                return result.format('dd.mm HH:MM');
+
+                                if (result < 0)
+                                    result = '- - -';
+                                else 
+                                    result = result.format('dd.mm HH:MM');
+
+                                return result;
                             }
                         },
                         {
@@ -138,6 +161,8 @@
                                 }
 
                                 result = result + '<a class="edit" href="@Url.Action("EditDataPoint", "DataPoint")/' + row.PointID + '"><i class="fa fa-pencil"></i></a>';
+
+                                result = result + '<a class="schedule" href="#" onclick="SetSchedule(\'' + row.PointID + '\')"><i class="fa fa-calendar"></i></a>';
 
                                 if (row.Ready) {
                                     result = result + '<a class="clean" id="aClean' + row.PointID + '" href="#" onclick="ConfirmAction(\'@Url.Action("CleanDataPoint", "DataPoint")/' + row.PointID + '\', \'очищение\');"><i class="fa fa-circle-thin"></i></a>';

@@ -29,6 +29,22 @@
           <Property Name="StartDateTime" Type="datetime" />
           <Property Name="EndDateTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="DataPointScheduler">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PointID" Type="int" Nullable="false" />
+          <Property Name="Enabled" Type="bit" Nullable="false" />
+          <Property Name="Monday" Type="bit" Nullable="false" />
+          <Property Name="Tuesday" Type="bit" Nullable="false" />
+          <Property Name="Wednesday" Type="bit" Nullable="false" />
+          <Property Name="Thursday" Type="bit" Nullable="false" />
+          <Property Name="Friday" Type="bit" Nullable="false" />
+          <Property Name="Saturday" Type="bit" Nullable="false" />
+          <Property Name="Sunday" Type="bit" Nullable="false" />
+          <Property Name="Interval" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Logger">
           <Key>
             <PropertyRef Name="ID" />
@@ -70,6 +86,7 @@
         <EntityContainer Name="Хранилище InternetCrawlerModelContainer">
           <EntitySet Name="DataPoint" EntityType="Self.DataPoint" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DataPointOperations" EntityType="Self.DataPointOperations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DataPointScheduler" EntityType="Self.DataPointScheduler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Logger" EntityType="Self.Logger" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoggerHeader" EntityType="Self.LoggerHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PointContent" EntityType="Self.PointContent" Schema="dbo" store:Type="Tables" />
@@ -137,6 +154,7 @@
           <EntitySet Name="PointContent" EntityType="Self.PointContent" />
           <FunctionImport Name="Get_DataPointStats" ReturnType="Collection(InternetCrawlerModel.Proc_GetDataPointStats)" />
           <EntitySet Name="DataPointOperations" EntityType="InternetCrawlerModel.DataPointOperations" />
+          <EntitySet Name="DataPointScheduler" EntityType="InternetCrawlerModel.DataPointScheduler" />
         </EntityContainer>
         <ComplexType Name="Proc_GetDataPointStats" >
           <Property Type="Int32" Name="PointID" Nullable="false" />
@@ -155,6 +173,22 @@
           <Property Name="PointID" Type="Int32" Nullable="false" />
           <Property Name="StartDateTime" Type="DateTime" Precision="3" />
           <Property Name="EndDateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DataPointScheduler">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PointID" Type="Int32" Nullable="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <Property Name="Monday" Type="Boolean" Nullable="false" />
+          <Property Name="Tuesday" Type="Boolean" Nullable="false" />
+          <Property Name="Wednesday" Type="Boolean" Nullable="false" />
+          <Property Name="Thursday" Type="Boolean" Nullable="false" />
+          <Property Name="Friday" Type="Boolean" Nullable="false" />
+          <Property Name="Saturday" Type="Boolean" Nullable="false" />
+          <Property Name="Sunday" Type="Boolean" Nullable="false" />
+          <Property Name="Interval" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -234,6 +268,23 @@
               <MappingFragment StoreEntitySet="DataPointOperations">
                 <ScalarProperty Name="EndDateTime" ColumnName="EndDateTime" />
                 <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
+                <ScalarProperty Name="PointID" ColumnName="PointID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataPointScheduler">
+            <EntityTypeMapping TypeName="InternetCrawlerModel.DataPointScheduler">
+              <MappingFragment StoreEntitySet="DataPointScheduler">
+                <ScalarProperty Name="Interval" ColumnName="Interval" />
+                <ScalarProperty Name="Sunday" ColumnName="Sunday" />
+                <ScalarProperty Name="Saturday" ColumnName="Saturday" />
+                <ScalarProperty Name="Friday" ColumnName="Friday" />
+                <ScalarProperty Name="Thursday" ColumnName="Thursday" />
+                <ScalarProperty Name="Wednesday" ColumnName="Wednesday" />
+                <ScalarProperty Name="Tuesday" ColumnName="Tuesday" />
+                <ScalarProperty Name="Monday" ColumnName="Monday" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
                 <ScalarProperty Name="PointID" ColumnName="PointID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

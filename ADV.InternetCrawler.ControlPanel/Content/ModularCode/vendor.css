@@ -15630,7 +15630,7 @@ button.close
 .modal
 {
     position: fixed;
-    top: 0;
+    top: 50px;
     right: 0;
     bottom: 0;
     left: 0;
@@ -15765,7 +15765,7 @@ button.close
     .modal-dialog
     {
         max-width: 500px;
-        margin: 30px auto;
+        margin: 80px auto;
     }
 
     .modal-sm

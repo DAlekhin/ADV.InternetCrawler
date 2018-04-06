@@ -181,6 +181,30 @@ namespace ADV.InternetCrawler
             return l_dataPointStats;
         }
 
+        public DataPointScheduleModel GetDataPointSchedule(Int32 _pointID)
+        {
+            DataPointScheduleModel l_dataPoindSchedule = new DataPointScheduleModel();
+
+            try
+            {
+                var l_containerObject = (IDataBase)Utility.Container.GetObject("DAL");
+                l_dataPoindSchedule = l_containerObject.GetDataPointSchedule(_pointID);
+
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, null, MessageType.Info, $"Расписание для точки {_pointID} получено.");
+            }
+            catch (Exception l_exc)
+            {
+                AddToMessage(this.GetType().FullName + "." + MethodBase.GetCurrentMethod().Name, "", MessageType.Fatal, $"Ошибка при получении расписания для точки {_pointID}: {l_exc.Message}", l_exc);
+            }
+            finally
+            {
+                this.PutMessages();
+                ICException.GetException(this.Messages);
+            }
+
+            return l_dataPoindSchedule;
+        }
+
         private void SetOperationToDataBase(Int32 _pointID, Int32 _type)
         {
             try
